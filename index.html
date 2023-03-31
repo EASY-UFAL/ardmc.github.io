@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DMC AR project</title>
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+  <h1>Hello...</h1>
+
+
+  <div class="container">
+    <video class="input_video" style="opacity: 20%; position: absolute;"></video>  
+    <canvas class="output_canvas" width="1280px" height="720px" style="position: absolute; z-index: -1000;"></canvas>
+  </div>
+
+
+  <table style="width: 100%; height: 350px;">
+
+    <tr>
+      <td> <button style="width: 100%; height: 100%; z-index: 0;" id='b1'> B 1 </button></td>
+      <td> <button style="width: 100%; height: 100%; z-index: 0;" id='b2'> B 2 </button></td>
+    </tr>
+
+
+    <tr>
+      <td> <button style="width: 100%; height: 100%; z-index: 0;" id='b3'> B 3 </button></td>
+      <td> <button style="width: 100%; height: 100%; z-index: 0;" id='b4'> B 4 </button></td>
+    </tr>
+
+  </table>
+
+</body>
+
+
+<!-- <script type="module"> -->
+<script type="text/javascript">
+
+var HAND;  
+
+var STATE = 'depressed';
+
+const b1 = document.getElementById('b1');
+const b2 = document.getElementById('b2');
+const b3 = document.getElementById('b3');
+const b4 = document.getElementById('b4');
+
+
+const videoElement = document.getElementsByClassName('input_video')[0];
+const canvasElement = document.getElementsByClassName('output_canvas')[0];
+const canvasCtx = canvasElement.getContext('2d');
+
+
+function clearButtons() {
+  b1.style.borderColor = 'gray';
+  b2.style.borderColor = 'gray';
+  b3.style.borderColor = 'gray';
+  b4.style.borderColor = 'gray';
+}
+
+function onResults(results) {
+  canvasCtx.save();
+  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+  
+  //canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+
+  clearButtons();
+
+
+  if (results.multiHandLandmarks.length>0) {
+    
+    HAND = results.multiHandLandmarks;
+
+    for (let i = 0; i<HAND[0].length; i++) {
+  
+      let landmarks = HAND[0][i];
+
+      let x = landmarks.x*canvasElement.width;
+      let y = landmarks.y*canvasElement.width;
+      let z = Math.abs(landmarks.z);
+
+      var color = '#000';
+
+      if (i==8) color = '#f00';
+
+      if ((i==8) && z>0.1) {
+        color = '#0f0';
+        let elem = document.elementFromPoint(x, y);
+        if (elem != null) {
+          elem.style.borderColor = 'red';
+          
+          if (STATE == 'depressed') {
+            click(elem);
+            STATE = 'pressed';
+          }
+
+          
+        }
+      } 
+
+      if ( (i==8) && (z<0.1) ) STATE = 'depressed';
+
+      canvasCtx.beginPath();
+      canvasCtx.arc(x, y, 100*z, 0, 2 * Math.PI);
+      canvasCtx.fillStyle = color;
+      canvasCtx.fill();
+      canvasCtx.stroke();
+
+
+      // drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS,  {color: '#00FF00', lineWidth: 5});
+      // drawLandmarks(canvasCtx, landmarks, {color: '#FF0000', lineWidth: 2});
+    }
+  }
+  canvasCtx.restore();
+}
+
+
+
+const hands = new Hands({locateFile: (file) => {
+  return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+}});
+hands.setOptions({
+  maxNumHands: 1,
+  modelComplexity: 1,
+  minDetectionConfidence: 0.5,
+  minTrackingConfidence: 0.5
+});
+hands.onResults(onResults);
+
+
+
+
+const camera = new Camera(videoElement, {
+  onFrame: async () => {
+    await hands.send({image: videoElement});
+  },
+  width: 1280,
+  height: 720
+});
+camera.start();
+
+
+
+
+
+function click(bt) {
+  console.log(bt.id);
+
+  var b = '0';
+  if (bt.id == 'b2')
+    b = '1';
+
+
+
+    fetch('https://192.168.0.59/'+b, {
+      method: 'GET',
+      headers: {
+          'Accept': 'application/html',
+          'Access-Control-Allow-Origin': '*'
+      },
+  })
+    .then(response => response.json())
+    .then(response => console.log(JSON.stringify(response)))
+
+
+}
+
+
+
+
+
+</script>
+
+
+
+</html>
