@@ -20,7 +20,7 @@
 
 
   <div class="container">
-    <video class="input_video" style="opacity: 20%; position: absolute;"></video>  
+    <video class="input_video" style="display: none; position: relative;"></video>  
     <canvas class="output_canvas" width="1280px" height="720px" style="position: absolute; z-index: -1000;"></canvas>
   </div>
 
@@ -86,8 +86,10 @@ function onResults(results) {
       let landmarks = HAND[0][i];
 
       let x = landmarks.x*canvasElement.width;
-      let y = landmarks.y*canvasElement.width;
+      let y = landmarks.y*canvasElement.height;
       let z = Math.abs(landmarks.z);
+
+      console.log("x : "+ x, "y : "+y, "z : "+z);
 
       var color = '#000';
 
