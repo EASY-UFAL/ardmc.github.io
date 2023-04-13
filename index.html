@@ -12,52 +12,34 @@
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css">
 
 
 </head>
 <body>
-  <!-- get value the screen -->
-  <script>
-    
-    function getResolution() {
-        alert("Your screen resolution is: " + screen.width + "x" + screen.height);
-    }
-    </script>
-
   <div class="container">
     <video class="input_video" style="display: none; position: relative;"></video>  
-    <canvas class="output_canvas" width="1325px" height="619px" style="position: absolute; z-index: -1000"></canvas>
-    <table style="width: 100%; height: 350px;">
-
-      <tr>
-        <td> <button style="width: 100%; height: 100%; z-index: 0; background-color: transparent;" id='b1'> B 1 </button></td>
-        <td> <button style="width: 100%; height: 100%; z-index: 0; background-color: transparent;" id='b2'> B 2 </button></td>
-      </tr>
-  
-  
-      <tr>
-        <td> <button style="width: 100%; height: 100%; z-index: 0; background-color: transparent" id='b3'> B 3 </button></td>
-        <td> <button style="width: 100%; height: 100%; z-index: 0; background-color: transparent" id='b4'> B 4 </button></td>
-      </tr>
-  
-    </table>
+    <canvas class="output_canvas"></canvas>
   </div>
 
 
-  <!-- <table style="width: 100%; height: 350px;">
+  <table style="width: 100%; height: 350px;">
 
     <tr>
-      <td> <button style="width: 100%; height: 100%; z-index: 0;" id='b1'> B 1 </button></td>
-      <td> <button style="width: 100%; height: 100%; z-index: 0;" id='b2'> B 2 </button></td>
+      <td> <button class="button-ar" role="button" id='b1'> B 1 </button></td>
+      <td> <button class="button-ar" id='b2'> B 2 </button></td>
     </tr>
 
 
     <tr>
-      <td> <button style="width: 100%; height: 100%; z-index: 0;" id='b3'> B 3 </button></td>
-      <td> <button style="width: 100%; height: 100%; z-index: 0;" id='b4'> B 4 </button></td>
+      <td> <button class="button-ar" id='b3'> B 3 </button></td>
+      <td> <button class="button-ar" id='b4'> B 4 </button></td>
     </tr>
 
-  </table> -->
+  </table>
+  <!-- altere o valor de output_canvas -->
+  <script src="script.js"></script>
+
 
 </body>
 
@@ -79,6 +61,8 @@ const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
 
+canvasElement.width = window.screen.width*window.devicePixelRatio;
+canvasElement.height = window.screen.height*window.devicePixelRatio;
 
 function clearButtons() {
   b1.style.borderColor = 'gray';
@@ -108,7 +92,7 @@ function onResults(results) {
       let y = landmarks.y*canvasElement.height;
       let z = Math.abs(landmarks.z);
 
-      // console.log("x : "+ x, "y : "+y, "z : "+z);
+      console.log("x : "+ x, "y : "+y, "z : "+z);
 
       var color = '#000';
 
@@ -117,7 +101,6 @@ function onResults(results) {
       if ((i==8) && z>0.1) {
         color = '#0f0';
         let elem = document.elementFromPoint(x, y);
-        console.log(elem);
         if (elem != null) {
           elem.style.borderColor = 'red';
           
@@ -197,12 +180,5 @@ function click(bt) {
 
 }
 
-
-
-
-
 </script>
-
-
-
 </html>
