@@ -83,6 +83,8 @@ function onResults(results) {
   if (results.multiHandLandmarks.length>0) {
     
     HAND = results.multiHandLandmarks;
+    indexFinger = {x:0, y:0, z:0}
+    middleFinger = {x:0, y:0, z:0}
 
     for (let i = 0; i<HAND[0].length; i++) {
   
@@ -92,12 +94,13 @@ function onResults(results) {
       let y = landmarks.y*canvasElement.height;
       let z = Math.abs(landmarks.z);
 
-      console.log("x : "+ x, "y : "+y, "z : "+z);
+      // console.log("x : "+ x, "y : "+y, "z : "+z);
 
       var color = '#000';
 
       if (i==8) color = '#f00';
 
+      
       if ((i==8) && z>0.1) {
         color = '#0f0';
         let elem = document.elementFromPoint(x, y);
@@ -108,11 +111,14 @@ function onResults(results) {
             click(elem);
             STATE = 'pressed';
           }
-
-          
         }
       } 
-
+      if(STATE == 'pressed' && (i==12)){
+        color = 'blue'
+        if(z>0.1){
+          color = '#0f0'
+        }
+      }
       if ( (i==8) && (z<0.1) ) STATE = 'depressed';
 
       canvasCtx.beginPath();
@@ -122,6 +128,26 @@ function onResults(results) {
       canvasCtx.stroke();
 
 
+      if(i==8) {        
+        const indexFinger = landmarks[i];
+        console.log(indexFinger)
+      }      
+      if(i==12){      
+        const middleFinger = landmarks[i];
+        console.log(middleFinger)
+      }
+      // Calcular a distância entre os dedos
+      const distance = Math.sqrt(
+          Math.pow(middleFinger.x - indexFinger.x, 2) +
+          Math.pow(middleFinger.y - indexFinger.y, 2) +
+          Math.pow(middleFinger.z - indexFinger.z, 2)
+      );
+
+      // Verificar se os dedos estão colados
+      const areFingersClose = distance < 0.01; // Ajuste o limite de acordo com suas necessidades
+
+      console.log(`Os dedos indicador e médio estão colados: ${areFingersClose}`);
+      console.log(distance)
       // drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS,  {color: '#00FF00', lineWidth: 5});
       // drawLandmarks(canvasCtx, landmarks, {color: '#FF0000', lineWidth: 2});
     }
