@@ -5,6 +5,7 @@
     height: 350px;
     z-index: 0;
     margin: 20px;
+    align: 'center';
 }
 /* .container{
     width: 100%;

@@ -22,8 +22,8 @@
     <canvas class="output_canvas"></canvas>
   </div>
 
-
-  <table style="width: 100%; height: 100%;" >
+  <button class="button-ar" role="button" id='b1'> B 1 </button>
+  <!-- <table style="width: 100%; height: 100%;" >
 
     <tr>
       <td> <button class="button-ar" role="button" id='b1'> B 1 </button></td>
@@ -35,7 +35,7 @@
       <td> <button class="button-ar" id='b4'> B 4 </button></td>
     </tr>
 
-  </table>
+  </table> -->
   <!-- altere o valor de output_canvas -->
   <script src="script.js"></script>
 
@@ -51,9 +51,9 @@ var HAND;
 var STATE = 'depressed';
 
 const b1 = document.getElementById('b1');
-const b2 = document.getElementById('b2');
-const b3 = document.getElementById('b3');
-const b4 = document.getElementById('b4');
+// const b2 = document.getElementById('b2');
+// const b3 = document.getElementById('b3');
+// const b4 = document.getElementById('b4');
 
 
 const videoElement = document.getElementsByClassName('input_video')[0];
@@ -65,9 +65,9 @@ canvasElement.height = window.screen.height*window.devicePixelRatio;
 
 function clearButtons() {
   b1.style.borderColor = 'gray';
-  b2.style.borderColor = 'gray';
-  b3.style.borderColor = 'gray';
-  b4.style.borderColor = 'gray';
+  // b2.style.borderColor = 'gray';
+  // b3.style.borderColor = 'gray';
+  // b4.style.borderColor = 'gray';
 }
 
 function onResults(results) {
@@ -88,8 +88,8 @@ function onResults(results) {
 
 
 
-      indexFinger = HAND[0][8];
-      middleFinger = HAND[0][4];
+      indexFinger = HAND[0][4];
+      middleFinger = HAND[0][20];
 
       // Calcular a distância entre os dedos
       const distance = Math.sqrt(
@@ -100,9 +100,9 @@ function onResults(results) {
 
       // Verificar se os dedos estão colados
       const areFingersClose = distance < 0.07; // Ajuste o limite de acordo com suas necessidades
-      console.log(indexFinger, middleFinger, distance)
+      // console.log(indexFinger, middleFinger, distance)
 
-      console.log(`Os dedos indicador e médio estão colados: ${areFingersClose}`);
+      // console.log(`Os dedos indicador e médio estão colados: ${areFingersClose}`);
 
       let x = landmarks.x*canvasElement.width;
       let y = landmarks.y*canvasElement.height;
@@ -112,12 +112,12 @@ function onResults(results) {
 
       var color = '#000';
 
-      if (i==8) color = '#f00';
+      if (i==20) color = '#f00';
 
       
-      if ((i==8) && z>0.1) {
+      let elem = document.elementFromPoint(x, y);
+      if ((i==20) && z>0.1) {
         color = '#0f0';
-        let elem = document.elementFromPoint(x, y);
         if (elem != null) {
           elem.style.borderColor = 'red';
           
@@ -127,13 +127,18 @@ function onResults(results) {
           }
         }
       } 
+      let elemClass = 'undefined'
+      if(elem != null){
+        console.log(elem.classList)
+        elemClass = elem.classList[0]
+      } 
       if(STATE == 'pressed' && (i==4)){
         color = 'blue'
-        if(areFingersClose){
+        if(areFingersClose && elemClass == 'button-ar'){
           alert('Você pressionou um botão!')
         }
       }
-      if ( (i==8) && (z<0.1) ) STATE = 'depressed';
+      if ( (i==20) && (z<0.01) || (i==4) && (z<0.01)) STATE = 'depressed';
 
       canvasCtx.beginPath();
       canvasCtx.arc(x, y, 100*z, 0, 2 * Math.PI);
