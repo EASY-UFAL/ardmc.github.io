@@ -81,14 +81,29 @@ function onResults(results) {
 
 
   if (results.multiHandLandmarks.length>0) {
-    
     HAND = results.multiHandLandmarks;
-    indexFinger = {x:0, y:0, z:0}
-    middleFinger = {x:0, y:0, z:0}
 
     for (let i = 0; i<HAND[0].length; i++) {
   
       let landmarks = HAND[0][i];
+
+
+
+      indexFinger = HAND[0][8];
+      middleFinger = HAND[0][12];
+
+      // Calcular a distância entre os dedos
+      const distance = Math.sqrt(
+          Math.pow(middleFinger.x - indexFinger.x, 2) +
+          Math.pow(middleFinger.y - indexFinger.y, 2) +
+          Math.pow(middleFinger.z - indexFinger.z, 2)
+      );
+
+      // Verificar se os dedos estão colados
+      const areFingersClose = distance < 0.07; // Ajuste o limite de acordo com suas necessidades
+      console.log(indexFinger, middleFinger, distance)
+
+      console.log(`Os dedos indicador e médio estão colados: ${areFingersClose}`);
 
       let x = landmarks.x*canvasElement.width;
       let y = landmarks.y*canvasElement.height;
@@ -115,8 +130,8 @@ function onResults(results) {
       } 
       if(STATE == 'pressed' && (i==12)){
         color = 'blue'
-        if(z>0.1){
-          color = '#0f0'
+        if(areFingersClose){
+          alert('Você pressionou um botão!')
         }
       }
       if ( (i==8) && (z<0.1) ) STATE = 'depressed';
@@ -126,30 +141,6 @@ function onResults(results) {
       canvasCtx.fillStyle = color;
       canvasCtx.fill();
       canvasCtx.stroke();
-
-
-      if(i==8) {        
-        const indexFinger = landmarks[i];
-        console.log(indexFinger)
-      }      
-      if(i==12){      
-        const middleFinger = landmarks[i];
-        console.log(middleFinger)
-      }
-      // Calcular a distância entre os dedos
-      const distance = Math.sqrt(
-          Math.pow(middleFinger.x - indexFinger.x, 2) +
-          Math.pow(middleFinger.y - indexFinger.y, 2) +
-          Math.pow(middleFinger.z - indexFinger.z, 2)
-      );
-
-      // Verificar se os dedos estão colados
-      const areFingersClose = distance < 0.01; // Ajuste o limite de acordo com suas necessidades
-
-      console.log(`Os dedos indicador e médio estão colados: ${areFingersClose}`);
-      console.log(distance)
-      // drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS,  {color: '#00FF00', lineWidth: 5});
-      // drawLandmarks(canvasCtx, landmarks, {color: '#FF0000', lineWidth: 2});
     }
   }
   canvasCtx.restore();
