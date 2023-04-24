@@ -26,7 +26,7 @@
     cursor: pointer;
     display: inline-block;
     text-align: center;
-    z-index: 5px;
+    z-index: 10px;
    }
 
    .screen{

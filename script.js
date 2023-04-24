@@ -96,10 +96,7 @@ function onResults(results) {
       );
 
       // Verificar se os dedos estão colados
-      const areFingersClose = distance < 0.07; // Ajuste o limite de acordo com suas necessidades
-      // console.log(indexFinger, middleFinger, distance)
-
-      console.log(`Os dedos indicador e médio estão colados: ${areFingersClose}`);
+      const areFingersClose = distance < 0.085;
 
       let x = landmarks.x*canvasElement.width;
       let y = landmarks.y*canvasElement.height;
@@ -110,29 +107,30 @@ function onResults(results) {
       if (i==20) color = '#f00';
 
       let elem = document.elementFromPoint(x, y);
-      if ((i==20)) {
+      if ((i==20) && z>0.1) {
         color = '#0f0';
         if (elem != null) {
           elem.style.borderColor = 'red';
           
           if (STATE == 'depressed') {
-            click(elem);
             STATE = 'pressed';
           }
         }
       } 
+      if ( (i==20) && (z<0.01) || (i==4) && (z<0.1)) {
+        STATE = 'depressed';
+      }
       let elemClass = 'undefined'
       if(elem != null){
-        console.log(elem.classList)
         elemClass = elem.classList[0]
       } 
-      if(STATE == 'pressed' && (i==4)){
+      if(STATE == 'pressed' && (i==4) && (z>0.1)){
         color = 'blue'
-        if(areFingersClose && elemClass == 'button-action'){
+        if(areFingersClose){
           alert(`Você pressionou o botão ${elem.innerText}`)
+          click(elem);
         }
       }
-      if ( (i==20) && (z<0.01) || (i==4) && (z<0.01)) STATE = 'depressed';
 
       canvasCtx.beginPath();
       canvasCtx.arc(x, y, 100*z, 0, 2 * Math.PI);
