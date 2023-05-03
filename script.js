@@ -77,22 +77,22 @@ function onResults(results) {
 
   clearButtons();
 
-
   if (results.multiHandLandmarks.length>0) {
     HAND = results.multiHandLandmarks;
+    thumb = HAND[0][4];
+    littleFinger = HAND[0][20];
 
     for (let i = 0; i<HAND[0].length; i++) {
   
       let landmarks = HAND[0][i];
 
-      indexFinger = HAND[0][4];
-      middleFinger = HAND[0][20];
+      console.log(thumb, littleFinger);
 
       // Calcular a distância entre os dedos
       const distance = Math.sqrt(
-          Math.pow(middleFinger.x - indexFinger.x, 2) +
-          Math.pow(middleFinger.y - indexFinger.y, 2) +
-          Math.pow(middleFinger.z - indexFinger.z, 2)
+          Math.pow(littleFinger.x - thumb.x, 2) +
+          Math.pow(littleFinger.y - thumb.y, 2) +
+          Math.pow(littleFinger.z - thumb.z, 2)
       );
 
       // Verificar se os dedos estão colados
@@ -101,14 +101,14 @@ function onResults(results) {
       let x = landmarks.x*canvasElement.width;
       let y = landmarks.y*canvasElement.height;
       let z = Math.abs(landmarks.z);
-
-      var color = '#000';
-
-      if (i==20) color = '#f00';
-
       let elem = document.elementFromPoint(x, y);
+
+      var color = 'black';
+
+      if (i==20) color = 'red';
+
       if ((i==20) && z>0.1) {
-        color = '#0f0';
+        color = 'blue';
         if (elem != null) {
           elem.style.borderColor = 'red';
           
