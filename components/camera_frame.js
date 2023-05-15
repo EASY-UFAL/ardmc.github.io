@@ -4,6 +4,8 @@ class CameraFrame {
         this.child = child
         this.canvasRect = null;
         this.enableToClick = false;
+        sessionStorage.removeItem('previousPalmBaseX');
+        sessionStorage.removeItem('previousButtonIndex');
     }
 
     draw() {
@@ -53,6 +55,7 @@ class CameraFrame {
     }
 
     onCameraResult(results, canvasCtx) {
+        this.detectHandMovement(results)
         let HAND;  
         
         if(this.canvasRect == null)
@@ -101,12 +104,12 @@ class CameraFrame {
                         buttonElement.style.borderColor = 'red';
                     
                         if(z > 0.2 && this.enableToClick){
-                            console.log(buttonElement.id, this.child.currentSlide);
-                            if(buttonElement.id == this.child.currentSlide){
-                                buttonElement.click();
-                            }else{
-                                this.child.slideTo(buttonElement);
-                            }
+                            // console.log(buttonElement.id, this.child.currentSlide);
+                            // if(buttonElement.id == this.child.currentSlide){
+                            buttonElement.click();
+                            // }else{
+                                // this.child.slideTo(buttonElement);
+                            // }
                             this.enableToClick = false;
                         }
                     }
@@ -121,6 +124,61 @@ class CameraFrame {
         }
         canvasCtx.restore();
     }
+
+    detectHandMovement(results) {
+        if (!results.multiHandLandmarks[0]) {
+            return;
+        }
+
+        const handLandmarks = results.multiHandLandmarks[0];
+        const palmBaseX = handLandmarks[0].x;
+
+        const previousPalmBaseX = sessionStorage.getItem('previousPalmBaseX');
+        const previousButtonIndex = parseInt(sessionStorage.getItem('previousButtonIndex'));
+        const handClosed = this.isHandClosed(handLandmarks);
+
+        if (previousPalmBaseX && handClosed) {
+            const deltaX = palmBaseX - previousPalmBaseX;
+            const buttonIndexAdd = -parseInt(deltaX * 7);
+            const movementThreshold = 0.001;
+
+            if (Math.abs(deltaX) > movementThreshold) {
+                console.log(buttonIndexAdd, previousButtonIndex,  buttonIndexAdd - previousButtonIndex);
+                this.child.slideToIndex(previousButtonIndex + buttonIndexAdd)
+            }
+        }
+
+        if(handClosed && previousPalmBaseX === null){
+            sessionStorage.setItem('previousPalmBaseX', palmBaseX);
+            sessionStorage.setItem('previousButtonIndex', this.child.currentSlide);
+        }else if(!handClosed){
+            sessionStorage.removeItem('previousPalmBaseX');
+            sessionStorage.removeItem('previousButtonIndex');
+        }
+    }
+
+
+    isHandClosed(handLandmarks) {
+        // Reference points for each finger
+        const fingerIndices = [8, 12, 16, 20];
+
+        // Threshold x to consider hand closed
+        const xProximityThreshold = 0.15; 
+
+        // X reference coordinate, using first finger
+        const referenceX = handLandmarks[fingerIndices[0]].x;
+
+        // Check if x coordinates of another fingers are close enough
+        for (let i = 1; i < fingerIndices.length; i++) {
+            const currentX = handLandmarks[fingerIndices[i]].x;
+            if (Math.abs(currentX - referenceX) > xProximityThreshold) {
+                return false; // Coordinates X are not close enough, so hand is not closed
+            }
+        }
+
+        return true; // Coordinates X are close enough, so hand is closed
+    }
+
 }
 
 export default CameraFrame;
