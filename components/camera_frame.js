@@ -102,17 +102,18 @@ class CameraFrame {
                             break;
                         }
                     }
+                    console.log(z)
                     if (z > 0.1) {
-                        markColor = 'blue';
-                    } else {
                         markColor = 'red';
-                        if (z < 0.3)
+                    } else {
+                        markColor = 'blue';
+                        if (z < 0.05)
                             this.enableToClick = true;
                     }
                     if (buttonElement != null) {
                         buttonElement.style.borderColor = 'red';
 
-                        if (z < 0.2 && this.enableToClick) {
+                        if (z < 0.05 && this.enableToClick) {
                             // console.log(buttonElement.id, this.child.currentSlide);
                             // if(buttonElement.id == this.child.currentSlide){
                             buttonElement.click();
@@ -251,13 +252,18 @@ class CameraFrame {
                     canvasCtx.beginPath();
                     const lw = 4;
                     canvasCtx.lineWidth = lw;
-                    canvasCtx.rect(50, 0, 85, 400)
+                    canvasCtx.rect(350, 100, 150, 400)
                     canvasCtx.fillStyle = 'red';
-                    canvasCtx.fillRect(50 + (lw / 2), 0 + (lw / 2), 85 - (lw / 2), 400 - (lw / 2));
+                    canvasCtx.fillRect(350 + (lw / 2), 100 + (lw / 2), 150 - (lw / 2), 400 - (lw / 2));
                     canvasCtx.stroke();
 
                     canvasCtx.fillStyle = 'white';
-                    canvasCtx.fillRect(50 + (lw / 2), 0 + (lw / 2), 85 - (lw / 2), ((1 - vol) * 400) - (lw / 2));
+                    canvasCtx.fillRect(350 + (lw / 2), 100 + (lw / 2), 150 - (lw / 2), ((1 - vol) * 400) - (lw / 2));
+                    canvasCtx.stroke();
+
+                    canvasCtx.fillStyle = 'black';
+                    canvasCtx.font = '70px serif';
+                    canvasCtx.fillText(Math.trunc(vol * 100) + '%', 600, 100);
                     canvasCtx.stroke();
                 }
 
@@ -295,7 +301,6 @@ class CameraFrame {
 
     isAnalogicPage() {
         let pageContent = document.getElementsByClassName('analogic-page');
-        console.log(pageContent)
         if (pageContent.length > 0) {
             return true;
         } else {

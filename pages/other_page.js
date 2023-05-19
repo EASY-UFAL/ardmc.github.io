@@ -20,10 +20,11 @@ class OtherPage {
 
         pageContent.appendChild(header);
 
-        const button1 = new Button('b1', 'Botão 1', () => { this.goToMainPage() });
-        const button2 = new Button('b2', 'Botão 2', () => { alert('Terapia') });
+        // const button1 = new Button('b1', 'Botão 1', () => { this.goToMainPage() });
+        // const button2 = new Button('b2', 'Botão 2', () => { alert('Terapia') });
 
-        const buttonsArr = [button1, button2];
+        // const buttonsArr = [button1, button2];
+        const buttonsArr = [];
         const list = new HorizontalList(buttonsArr);
 
 
