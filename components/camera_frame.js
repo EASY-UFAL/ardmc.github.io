@@ -248,13 +248,13 @@ class CameraFrame {
                     canvasCtx.beginPath();
                     const lw = 4;
                     canvasCtx.lineWidth = lw;
-                    canvasCtx.rect(50, 50, 85, 550)
+                    canvasCtx.rect(50, 0, 85, 400)
                     canvasCtx.fillStyle = 'red';
-                    canvasCtx.fillRect(50 + (lw / 2), 50 + (lw / 2), 85 - (lw / 2), 550 - (lw / 2));
+                    canvasCtx.fillRect(50 + (lw / 2), 0 + (lw / 2), 85 - (lw / 2), 400 - (lw / 2));
                     canvasCtx.stroke();
 
                     canvasCtx.fillStyle = 'white';
-                    canvasCtx.fillRect(50 + (lw / 2), 50 + (lw / 2), 85 - (lw / 2), ((1 - vol) * 550) - (lw / 2));
+                    canvasCtx.fillRect(50 + (lw / 2), 0 + (lw / 2), 85 - (lw / 2), ((1 - vol) * 400) - (lw / 2));
                     canvasCtx.stroke();
                 }
 
