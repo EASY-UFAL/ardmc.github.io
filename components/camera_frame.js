@@ -44,7 +44,13 @@ class CameraFrame {
             minDetectionConfidence: 0.5,
             minTrackingConfidence: 0.5
         });
-        hands.onResults((results) => { this.onCameraResult(results, canvasCtx) });
+        hands.onResults((results) => {
+            if (this.isAnalogicPage()) {
+                this.analogicGesture(results, canvasCtx)
+            } else {
+                this.onCameraResult(results, canvasCtx)
+            }
+        });
 
         const camera = new Camera(this.videoElement, {
             onFrame: async () => {
@@ -57,78 +63,75 @@ class CameraFrame {
     }
 
     onCameraResult(results, canvasCtx) {
-        if (this.isAnalogicPage()) {
-            this.analogicGesture(results, canvasCtx)
-        } else {
-            this.detectHandMovement(results);
-            let HAND;
 
-            if (this.canvasRect == null)
-                this.canvasRect = this.outputCanvas.getBoundingClientRect();
+        this.detectHandMovement(results);
+        let HAND;
 
-            canvasCtx.save();
-            canvasCtx.clearRect(0, 0, this.outputCanvas.width, this.outputCanvas.height);
+        if (this.canvasRect == null)
+            this.canvasRect = this.outputCanvas.getBoundingClientRect();
 
-            this.child.clearButtons();
+        canvasCtx.save();
+        canvasCtx.clearRect(0, 0, this.outputCanvas.width, this.outputCanvas.height);
 
-            if (results.multiHandLandmarks.length > 0) {
-                HAND = results.multiHandLandmarks;
+        this.child.clearButtons();
 
-                for (let i = 0; i < HAND[0].length; i++) {
+        if (results.multiHandLandmarks.length > 0) {
+            HAND = results.multiHandLandmarks;
 
-                    let landmarks = HAND[0][i];
+            for (let i = 0; i < HAND[0].length; i++) {
 
-                    let x = landmarks.x * this.outputCanvas.width;
-                    let y = landmarks.y * this.outputCanvas.height;
-                    let z = Math.abs(landmarks.z);
-                    let markColor = 'black';
+                let landmarks = HAND[0][i];
 
-                    if (i === 8) {  // POINTER FINGER
-                        let rect = this.canvasRect;
-                        let xM = landmarks.x * (rect.right - rect.left) + rect.left;
-                        let yM = landmarks.y * (rect.bottom - rect.top) + rect.top;
+                let x = landmarks.x * this.outputCanvas.width;
+                let y = landmarks.y * this.outputCanvas.height;
+                let z = Math.abs(landmarks.z);
+                let markColor = 'black';
 
-                        const elements = document.elementsFromPoint(xM, yM);
+                if (i === 8) {  // POINTER FINGER
+                    let rect = this.canvasRect;
+                    let xM = landmarks.x * (rect.right - rect.left) + rect.left;
+                    let yM = landmarks.y * (rect.bottom - rect.top) + rect.top;
 
-                        let buttonElement = null;
+                    const elements = document.elementsFromPoint(xM, yM);
 
-                        for (const element of elements) {
-                            if (element.tagName === 'BUTTON') {
-                                buttonElement = element;
-                                break;
-                            }
-                        }
-                        if (z > 0.1) {
-                            markColor = 'blue';
-                        } else {
-                            markColor = 'red';
-                            if (z < 0.3)
-                                this.enableToClick = true;
-                        }
-                        if (buttonElement != null) {
-                            buttonElement.style.borderColor = 'red';
+                    let buttonElement = null;
 
-                            if (z < 0.2 && this.enableToClick) {
-                                // console.log(buttonElement.id, this.child.currentSlide);
-                                // if(buttonElement.id == this.child.currentSlide){
-                                buttonElement.click();
-                                // }else{
-                                // this.child.slideTo(buttonElement);
-                                // }
-                                this.enableToClick = false;
-                            }
+                    for (const element of elements) {
+                        if (element.tagName === 'BUTTON') {
+                            buttonElement = element;
+                            break;
                         }
                     }
+                    if (z > 0.1) {
+                        markColor = 'blue';
+                    } else {
+                        markColor = 'red';
+                        if (z < 0.3)
+                            this.enableToClick = true;
+                    }
+                    if (buttonElement != null) {
+                        buttonElement.style.borderColor = 'red';
 
-                    canvasCtx.beginPath();
-                    canvasCtx.arc(x, y, 100 * z, 0, 2 * Math.PI);
-                    canvasCtx.fillStyle = markColor;
-                    canvasCtx.fill();
-                    canvasCtx.stroke();
+                        if (z < 0.2 && this.enableToClick) {
+                            // console.log(buttonElement.id, this.child.currentSlide);
+                            // if(buttonElement.id == this.child.currentSlide){
+                            buttonElement.click();
+                            // }else{
+                            // this.child.slideTo(buttonElement);
+                            // }
+                            this.enableToClick = false;
+                        }
+                    }
                 }
+
+                canvasCtx.beginPath();
+                canvasCtx.arc(x, y, 100 * z, 0, 2 * Math.PI);
+                canvasCtx.fillStyle = markColor;
+                canvasCtx.fill();
+                canvasCtx.stroke();
             }
-            canvasCtx.restore();
         }
+        canvasCtx.restore();
     }
 
     detectHandMovement(results) {
@@ -170,7 +173,7 @@ class CameraFrame {
         const fingerIndices = [8, 12, 16, 20];
 
         // Threshold x to consider hand closed
-        const xProximityThreshold = 0.15;
+        const xProximityThreshold = 0.1;
 
         // X reference coordinate, using first finger
         const referenceX = handLandmarks[fingerIndices[0]].x;
@@ -292,6 +295,7 @@ class CameraFrame {
 
     isAnalogicPage() {
         let pageContent = document.getElementsByClassName('analogic-page');
+        console.log(pageContent)
         if (pageContent.length > 0) {
             return true;
         } else {
