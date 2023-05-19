@@ -98,17 +98,17 @@ class CameraFrame {
                                 break;
                             }
                         }
-                        if (z > 0.2) {
+                        if (z > 0.1) {
                             markColor = 'blue';
                         } else {
                             markColor = 'red';
-                            if (z < 0.1)
+                            if (z < 0.3)
                                 this.enableToClick = true;
                         }
                         if (buttonElement != null) {
                             buttonElement.style.borderColor = 'red';
 
-                            if (z > 0.2 && this.enableToClick) {
+                            if (z < 0.2 && this.enableToClick) {
                                 // console.log(buttonElement.id, this.child.currentSlide);
                                 // if(buttonElement.id == this.child.currentSlide){
                                 buttonElement.click();
