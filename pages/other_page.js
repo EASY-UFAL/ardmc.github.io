@@ -4,11 +4,12 @@ import CameraFrame from "../components/camera_frame.js";
 import MainPage from "./main_page.js";
 
 class OtherPage {
-    constructor() {}
+    constructor() { }
 
-    draw(){
+    draw() {
         const pageContent = document.getElementById('page-content');
         pageContent.innerHTML = "";
+        pageContent.className = "analogic-page";
 
         const header = document.createElement('div');
         header.className = 'header';
@@ -19,8 +20,8 @@ class OtherPage {
 
         pageContent.appendChild(header);
 
-        const button1 = new Button('b1', 'Botão 1', ()=>{this.goToMainPage()});
-        const button2 = new Button('b2', 'Botão 2', ()=>{alert('Terapia')});
+        const button1 = new Button('b1', 'Botão 1', () => { this.goToMainPage() });
+        const button2 = new Button('b2', 'Botão 2', () => { alert('Terapia') });
 
         const buttonsArr = [button1, button2];
         const list = new HorizontalList(buttonsArr);
