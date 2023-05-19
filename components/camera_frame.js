@@ -263,7 +263,7 @@ class CameraFrame {
 
                     canvasCtx.fillStyle = 'black';
                     canvasCtx.font = '70px serif';
-                    canvasCtx.fillText(Math.trunc(vol * 100) + '%', 80, 5);
+                    canvasCtx.fillText(Math.trunc(vol * 100) + '%', 150, 50);
                     canvasCtx.stroke();
                 }
 
