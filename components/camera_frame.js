@@ -107,13 +107,13 @@ class CameraFrame {
                         markColor = 'red';
                     } else {
                         markColor = 'blue';
-                        if (z < 0.05)
+                        if (z < 0.005)
                             this.enableToClick = true;
                     }
                     if (buttonElement != null) {
                         buttonElement.style.borderColor = 'red';
 
-                        if (z < 0.05 && this.enableToClick) {
+                        if (z < 0.005 && this.enableToClick) {
                             // console.log(buttonElement.id, this.child.currentSlide);
                             // if(buttonElement.id == this.child.currentSlide){
                             buttonElement.click();
@@ -252,18 +252,18 @@ class CameraFrame {
                     canvasCtx.beginPath();
                     const lw = 4;
                     canvasCtx.lineWidth = lw;
-                    canvasCtx.rect(350, 100, 150, 400)
+                    canvasCtx.rect(50, 0, 85, 400)
                     canvasCtx.fillStyle = 'red';
-                    canvasCtx.fillRect(350 + (lw / 2), 100 + (lw / 2), 150 - (lw / 2), 400 - (lw / 2));
+                    canvasCtx.fillRect(50 + (lw / 2), 0 + (lw / 2), 85 - (lw / 2), 400 - (lw / 2));
                     canvasCtx.stroke();
 
                     canvasCtx.fillStyle = 'white';
-                    canvasCtx.fillRect(350 + (lw / 2), 100 + (lw / 2), 150 - (lw / 2), ((1 - vol) * 400) - (lw / 2));
+                    canvasCtx.fillRect(50 + (lw / 2), 0 + (lw / 2), 85 - (lw / 2), ((1 - vol) * 400) - (lw / 2));
                     canvasCtx.stroke();
 
                     canvasCtx.fillStyle = 'black';
                     canvasCtx.font = '70px serif';
-                    canvasCtx.fillText(Math.trunc(vol * 100) + '%', 600, 100);
+                    canvasCtx.fillText(Math.trunc(vol * 100) + '%', 80, 5);
                     canvasCtx.stroke();
                 }
 
