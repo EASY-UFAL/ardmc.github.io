@@ -1,10 +1,9 @@
 import Button from "../components/button.js";
 import HorizontalList from "../components/horizontal_list.js";
 import CameraFrame from "../components/camera_frame.js";
-import MainPage from "./main_page.js";
 import SurgeryPage from "./surgery_page.js";
-
-class OtherPage {
+import ModeConfigurationPage from "./mode_configuration_page.js";
+class ContinuousModePage {
     constructor() {}
 
     draw(){
@@ -15,16 +14,15 @@ class OtherPage {
         header.className = 'header';
         const pageTitle = document.createElement('div');
         pageTitle.className = 'text-menu';
-        pageTitle.innerHTML = 'Menu Secundário';
+        pageTitle.innerHTML = 'Menu Principal';
         header.appendChild(pageTitle);
 
         pageContent.appendChild(header);
 
-        const button1 = new Button('b1', 'Normal', ()=>{this.goToSurgeryPage()});
-        const button2 = new Button('b2', 'Assistida', ()=>{alert('Cirurgia Assistida')});
-        const button3 = new Button('b3', 'Voltar',()=>{this.goToMainPage()});
+        const button1 = new Button('b1', 'Confirmar', ()=>{this.goToSurgeryPage()});
+        const button2 =  new Button('b4', 'Cancelar', ()=>{this.goToModeConfigurationPage()});
 
-        const buttonsArr = [button1, button2, button3];
+        const buttonsArr = [button1, button2, button3, button4];
         const list = new HorizontalList(buttonsArr);
 
 
@@ -33,14 +31,15 @@ class OtherPage {
 
     }
 
-    goToMainPage() {
-        const page = new MainPage();
+    goToModeConfigurationPage(){
+        const page = new ModeConfigurationPage();
         page.draw();
     }
     goToSurgeryPage() {
         const page = new SurgeryPage();
         page.draw();
     }
+    
 }
 
-export default OtherPage;
+export default ContinuousModePage;
