@@ -1,9 +1,11 @@
 import Button from "../components/button.js";
 import HorizontalList from "../components/horizontal_list.js";
 import CameraFrame from "../components/camera_frame.js";
+import PropertyButton from "../components/property_button.js";
 import MainPage from "./main_page.js";
 import ModeConfigurationPage from "./mode_configuration_page.js";
 import OtherPage from "./other_page.js";
+import PowerConfigPage from "./power_config_page.js";
 
 class SurgeryPage {
     constructor() {}
@@ -21,9 +23,11 @@ class SurgeryPage {
 
         pageContent.appendChild(header);
 
-        const button1 = new Button('b1', 'Em Espera', ()=>{this.switchState()});
+        const button1 = new Button('b1', 'Em Espera',()=>{this.switchState()});
         // ainda em implementação
-        const button2 = new Button('b2', 'Potência', ()=>{alert('Potência')});
+        // const button2 = new Button('b2', 'Potência', ()=>{alert('Potência')});
+        const button2 = new PropertyButton('b2', 'Potência', 0.5, 9.0, 0.5,'W',()=>{this.goToPowerConfigPage()});
+        // const button2 = new PropertyButton('b2', 'Potência', 0.5, 9.0, 0.5,'W',()=>{alert('Potência')});
         const button3 = new Button('b3', 'Modo', ()=>{alert('Modo')});
         const button4 = new Button('b4', 'Tempo', ()=>{alert('Tempo')});
         const button5 = new Button('b5', 'Energia', ()=>{alert('Energia')});
@@ -55,13 +59,20 @@ class SurgeryPage {
         const page = new ModeConfigurationPage();
         page.draw();
     }
+
     goToMainPage() {
         const page = new MainPage();
         page.draw();
     }
+
     goToOtherPage(){
-        const page = new OtherPage
-        page.draw()
+        const page = new OtherPage();
+        page.draw();
+    }
+
+    goToPowerConfigPage(){
+        const page = new PowerConfigPage(0.5,9,0.5,0.5);
+        page.draw();
     }
     
 }
