@@ -6,6 +6,7 @@ import MainPage from "./main_page.js";
 import ModeConfigurationPage from "./mode_configuration_page.js";
 import OtherPage from "./other_page.js";
 import PowerConfigPage from "./power_config_page.js";
+import ResetTimerPage from "./time_reset_page.js";
 
 class SurgeryPage {
     constructor() {}
@@ -24,13 +25,11 @@ class SurgeryPage {
         pageContent.appendChild(header);
 
         const button1 = new Button('b1', 'Em Espera',()=>{this.switchState()});
-        // ainda em implementação
-        // const button2 = new Button('b2', 'Potência', ()=>{alert('Potência')});
         const button2 = new PropertyButton('b2', 'Potência', 0.5, 9.0, 0.5,'W',()=>{this.goToPowerConfigPage()});
-        // const button2 = new PropertyButton('b2', 'Potência', 0.5, 9.0, 0.5,'W',()=>{alert('Potência')});
-        const button3 = new Button('b3', 'Modo', ()=>{alert('Modo')});
-        const button4 = new Button('b4', 'Tempo', ()=>{alert('Tempo')});
-        const button5 = new Button('b5', 'Energia', ()=>{alert('Energia')});
+        // const button3 = new Button('b3', 'Modo', ()=>{alert('Modo')});
+        const button3 = new Button('b3', 'Modo', ()=>{this.goToModeConfigPage()});
+        const button4 = new PropertyButton('b4', 'Tempo', 0, 1000000, 0, 's', ()=>{this.goToResetTimerPage()});
+        const button5 = new PropertyButton('b5', 'Energia', 0, 1000000, 0, 'J',()=>{alert('Energia')});
         const button6 = new Button('b6', 'Menu', ()=>{this.goToMainPage()});
         const button7 = new Button('b7', 'Testar Fibra', ()=>{alert('Testar Fibra')});
         const button8 = new Button('b8', 'Voltar', ()=>{this.goToOtherPage()});
@@ -74,7 +73,10 @@ class SurgeryPage {
         const page = new PowerConfigPage(0.5,9,0.5,0.5);
         page.draw();
     }
-    
+    goToResetTimerPage(){
+        const page = new ResetTimerPage();
+        page.draw();
+    }
 }
 
 export default SurgeryPage;

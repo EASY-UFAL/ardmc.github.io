@@ -1,10 +1,10 @@
 import Button from "../components/button.js";
 import HorizontalList from "../components/horizontal_list.js";
 import CameraFrame from "../components/camera_frame.js";
+import MainPage from "./main_page.js";
 import SurgeryPage from "./surgery_page.js";
-import ModeConfigurationPage from "./mode_configuration_page.js";
 
-class ContinuousModePage {
+class ResetTimerPage {
     constructor() {}
 
     draw(){
@@ -15,14 +15,14 @@ class ContinuousModePage {
         header.className = 'header';
         const pageTitle = document.createElement('div');
         pageTitle.className = 'text-menu';
-        pageTitle.innerHTML = 'Contínuo';
+        pageTitle.innerHTML = 'Deseja zerar os contadores de tempo e de energia?';
         header.appendChild(pageTitle);
 
         pageContent.appendChild(header);
 
-        const button1 = new Button('b1', 'Cancelar', ()=>{this.goToModeConfigurationPage()});
-        const button2 =  new Button('b2', 'Confirmar', ()=>{this.goToSurgeryPage()});
-
+        const button1 = new Button('b1', 'Sim', ()=>{this.goToSurgeryPage()});
+        const button2 = new Button('b2', 'Não', ()=>{this.goToSurgeryPage()});
+        
         const buttonsArr = [button1, button2];
         const list = new HorizontalList(buttonsArr);
 
@@ -32,15 +32,14 @@ class ContinuousModePage {
 
     }
 
-    goToModeConfigurationPage(){
-        const page = new ModeConfigurationPage();
+    goToMainPage() {
+        const page = new MainPage();
         page.draw();
     }
     goToSurgeryPage() {
         const page = new SurgeryPage();
         page.draw();
     }
-    
 }
 
-export default ContinuousModePage;
+export default ResetTimerPage;

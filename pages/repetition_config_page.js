@@ -4,7 +4,7 @@ import CameraFrame from "../components/camera_frame.js";
 import OtherPage from "./other_page.js";
 import PropertyBar from "../components/property_bar.js";
 
-class PowerConfigPage {
+class RepetitionConfigPage {
     constructor(min,max,value,step,unit) {
         this.min = min
         this.max = max
@@ -22,7 +22,7 @@ class PowerConfigPage {
         header.className = 'header';
         const pageTitle = document.createElement('div');
         pageTitle.className = 'text-menu';
-        pageTitle.innerHTML = 'Potência';
+        pageTitle.innerHTML = 'Repetição';
         header.appendChild(pageTitle);
         pageContent.appendChild(header);
         
@@ -46,4 +46,4 @@ class PowerConfigPage {
     }
 }
 
-export default PowerConfigPage;
+export default RepetitionConfigPage;

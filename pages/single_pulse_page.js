@@ -2,13 +2,10 @@ import Button from "../components/button.js";
 import PropertyButton from "../components/property_button.js";
 import HorizontalList from "../components/horizontal_list.js";
 import CameraFrame from "../components/camera_frame.js";
-import ModeConfigurationPage from "./mode_configuration_page.js";
 import SurgeryPage from "./surgery_page.js";
+import ModeConfigurationPage from "./mode_configuration_page.js";
 import DurationConfigPage from "./duration_config_page.js";
-import RepetitionConfigPage from "./repetition_config_page.js";
-import FrequencyConfigPage from "./frequency_config_page.js";
-
-class PulsedModePage {
+class SinglePulsePage {
     constructor() {}
 
     draw(){
@@ -19,18 +16,16 @@ class PulsedModePage {
         header.className = 'header';
         const pageTitle = document.createElement('div');
         pageTitle.className = 'text-menu';
-        pageTitle.innerHTML = 'Pulsado';
+        pageTitle.innerHTML = 'Pulso Único';
         header.appendChild(pageTitle);
 
         pageContent.appendChild(header);
 
         const button1 = new PropertyButton('b1', 'Duração', 25, 1000, 25, 'ms', ()=>{this.goToDurationConfigPage()});
-        const button2 = new PropertyButton('b2', 'Repetição', 30, 500, 30, 'ms', ()=>{this.goToRepetitionConfigPage()});
-        const button3 = new PropertyButton('b3', 'Frequência', 33.3,1000,33.3,'Hz', ()=>{this.goToFrequencyConfigPage()});
-        const button4 = new Button('b4', 'Cancelar', ()=>{this.goToModeConfigurationPage()});
-        const button5 = new Button('b5', 'Confirmar', ()=>{this.goToSurgeryPage()});
+        const button2 = new Button('b2', 'Cancelar', ()=>{this.goToModeConfigurationPage()});
+        const button3 =  new Button('b3', 'Confirmar', ()=>{this.goToSurgeryPage()});
 
-        const buttonsArr = [button1, button2, button3, button4, button5];
+        const buttonsArr = [button1, button2, button3];
         const list = new HorizontalList(buttonsArr);
 
 
@@ -44,25 +39,15 @@ class PulsedModePage {
         page.draw();
     }
 
-    goToRepetitionConfigPage(){
-        const page = new RepetitionConfigPage(30, 500, 30, 30, 'ms');
-        page.draw();
-    }
-
-    goToFrequencyConfigPage(){
-        const page = new FrequencyConfigPage( 33.3, 1000, 33.3, 0.01,'Hz');
-        page.draw();
-    }
-
     goToModeConfigurationPage(){
         const page = new ModeConfigurationPage();
         page.draw();
     }
-
     goToSurgeryPage() {
         const page = new SurgeryPage();
         page.draw();
     }
+    
 }
 
-export default PulsedModePage;
+export default SinglePulsePage;
