@@ -103,3 +103,16 @@
     width: 1%;
     background-color: #FFF06E;
   }
+
+  progress {
+    width: 100%;
+    height: 30px;
+  }
+
+  progress::-webkit-progress-value {
+    background-color: #4CAF50;
+  }
+
+  progress::-moz-progress-bar {
+    background-color: #4CAF50;
+  }

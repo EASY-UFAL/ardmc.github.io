@@ -20,7 +20,7 @@ class HorizontalList {
         });
 
         this.children.forEach((slide, indx) => {
-            slide.style.transform = `translateX(${(indx+1) * 100}%)`;
+            slide.style.transform = `translateX(${(indx) * 100}%)`;
         });
 
         return list;
@@ -29,7 +29,7 @@ class HorizontalList {
     slideTo(button){
         this.currentSlide = parseInt(button.id);
         this.children.forEach((slide, indx) => {
-            slide.style.transform = `translateX(${100 * ((indx+1) - this.currentSlide)}%)`;
+            slide.style.transform = `translateX(${100 * ((indx) - this.currentSlide)}%)`;
         });
     }
 
@@ -40,7 +40,7 @@ class HorizontalList {
         if(this.currentSlide > this.maxSlide)
             this.currentSlide = this.maxSlide;
         this.children.forEach((slide, indx) => {
-            slide.style.transform = `translateX(${100 * ((indx+1) - this.currentSlide)}%)`;
+            slide.style.transform = `translateX(${100 * ((indx) - this.currentSlide)}%)`;
         });
     }
 
