@@ -107,13 +107,13 @@ class CameraFrame {
                         markColor = 'red';
                     } else {
                         markColor = 'blue';
-                        if (z < 0.05)
+                        if (z < 0.01)
                             this.enableToClick = true;
                     }
                     if (buttonElement != null) {
                         buttonElement.style.borderColor = 'red';
 
-                        if (z < 0.05 && this.enableToClick) {
+                        if (z < 0.01 && this.enableToClick) {
                             // console.log(buttonElement.id, this.child.currentSlide);
                             // if(buttonElement.id == this.child.currentSlide){
                             buttonElement.click();
