@@ -1,3 +1,7 @@
+import {
+        GestureRecognizer,
+        FilesetResolver
+    } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0";
 class CameraFrame {
 
     constructor(child) {
@@ -6,6 +10,8 @@ class CameraFrame {
         this.enableToClick = false;
         sessionStorage.removeItem('previousPalmBaseX');
         sessionStorage.removeItem('previousButtonIndex');
+        this.lastVideoTime = -1;
+        this.isHandOpen = true;
     }
 
     draw() {
@@ -28,11 +34,16 @@ class CameraFrame {
     }
 
     init() {
-        const canvasCtx = this.outputCanvas.getContext('2d');
+        this.canvasCtx = this.outputCanvas.getContext('2d');
 
         this.outputCanvas.width = window.screen.width * window.devicePixelRatio;
         this.outputCanvas.height = window.screen.height * window.devicePixelRatio;
 
+        this.initMediaPipe();
+        
+    }
+
+    async initMediaPipe(){
         const hands = new Hands({
             locateFile: (file) => {
                 return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
@@ -46,23 +57,56 @@ class CameraFrame {
         });
         hands.onResults((results) => {
             if (this.isAnalogicPage()) {
-                this.analogicGesture(results, canvasCtx)
+                this.analogicGesture(results, this.canvasCtx)
             } else {
-                this.onCameraResult(results, canvasCtx)
+                this.onHandsResult(results, this.canvasCtx)
             }
+        });
+
+        const vision = await FilesetResolver.forVisionTasks(
+            "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
+        );
+        const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
+            baseOptions: {
+                modelAssetPath:
+                    "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task"
+            },
+            runningMode: "VIDEO"
         });
 
         const camera = new Camera(this.videoElement, {
             onFrame: async () => {
                 await hands.send({ image: this.videoElement });
+                let nowInMs = Date.now();
+                if (this.videoElement.currentTime !== this.lastVideoTime) {
+                    this.lastVideoTime = this.videoElement.currentTime;
+                    let results = gestureRecognizer.recognizeForVideo(this.videoElement, nowInMs);
+                    this.onGestureRecognizerResult(results);
+                }
             },
             width: 640,
             height: 340
         });
+
         camera.start();
     }
 
-    onCameraResult(results, canvasCtx) {
+    onGestureRecognizerResult(results){
+        if (results.gestures.length > 0) {
+            const categoryName = results.gestures[0][0].categoryName;
+            const categoryScore = parseFloat(
+                results.gestures[0][0].score * 100
+            ).toFixed(2);
+            // console.log(`GestureRecognizer: ${categoryName}\n Confidence: ${categoryScore} %`);
+            if(categoryName === 'Closed_Fist'){
+                this.isHandOpen = false;
+            }else if(categoryName === 'Open_Palm'){
+                this.isHandOpen = true;
+            }
+        }
+    }
+
+    onHandsResult(results, canvasCtx) {
 
         this.detectHandMovement(results);
         let HAND;
@@ -94,6 +138,8 @@ class CameraFrame {
 
                     const elements = document.elementsFromPoint(xM, yM);
 
+
+                    // IDENTIFICANDO BOTÃO SELECIONADO PELO DEDO INDICADOR
                     let buttonElement = null;
 
                     for (const element of elements) {
@@ -102,7 +148,8 @@ class CameraFrame {
                             break;
                         }
                     }
-                    console.log(z)
+                    // console.log(z)
+                    
                     if (z > 0.1) {
                         markColor = 'red';
                     } else {
@@ -113,7 +160,7 @@ class CameraFrame {
                     if (buttonElement != null) {
                         buttonElement.style.borderColor = 'red';
 
-                        if (z < 0.005 && this.enableToClick) {
+                        if (z < 0.005 && this.enableToClick && this.isHandOpen) {
                             // console.log(buttonElement.id, this.child.currentSlide);
                             // if(buttonElement.id == this.child.currentSlide){
                             buttonElement.click();
@@ -146,7 +193,8 @@ class CameraFrame {
 
         const previousPalmBaseX = sessionStorage.getItem('previousPalmBaseX');
         const previousButtonIndex = parseInt(sessionStorage.getItem('previousButtonIndex'));
-        const handClosed = this.isHandClosed(handLandmarks);
+        // const handClosed = this.isHandClosed(handLandmarks);
+        const handClosed = !this.isHandOpen;
 
         if (previousPalmBaseX && handClosed) {
             const deltaX = palmBaseX - previousPalmBaseX;
@@ -154,7 +202,7 @@ class CameraFrame {
             const movementThreshold = 0.001;
 
             if (Math.abs(deltaX) > movementThreshold) {
-                console.log(buttonIndexAdd, previousButtonIndex, buttonIndexAdd - previousButtonIndex);
+                // console.log(buttonIndexAdd, previousButtonIndex, buttonIndexAdd - previousButtonIndex);
                 this.child.slideToIndex(previousButtonIndex + buttonIndexAdd)
             }
         }
@@ -169,26 +217,26 @@ class CameraFrame {
     }
 
 
-    isHandClosed(handLandmarks) {
+    // isHandClosed(handLandmarks) {
         // Reference points for each finger
-        const fingerIndices = [8, 12, 16, 20];
+        // const fingerIndices = [8, 12, 16, 20];
 
-        // Threshold x to consider hand closed
-        const xProximityThreshold = 0.1;
+        // // Threshold x to consider hand closed
+        // const xProximityThreshold = 0.1;
 
-        // X reference coordinate, using first finger
-        const referenceX = handLandmarks[fingerIndices[0]].x;
+        // // X reference coordinate, using first finger
+        // const referenceX = handLandmarks[fingerIndices[0]].x;
 
-        // Check if x coordinates of another fingers are close enough
-        for (let i = 1; i < fingerIndices.length; i++) {
-            const currentX = handLandmarks[fingerIndices[i]].x;
-            if (Math.abs(currentX - referenceX) > xProximityThreshold) {
-                return false; // Coordinates X are not close enough, so hand is not closed
-            }
-        }
+        // // Check if x coordinates of another fingers are close enough
+        // for (let i = 1; i < fingerIndices.length; i++) {
+        //     const currentX = handLandmarks[fingerIndices[i]].x;
+        //     if (Math.abs(currentX - referenceX) > xProximityThreshold) {
+        //         return false; // Coordinates X are not close enough, so hand is not closed
+        //     }
+        // }
 
-        return true; // Coordinates X are close enough, so hand is closed
-    }
+        // return true; // Coordinates X are close enough, so hand is closed
+    // }
 
     analogicGesture(results, canvasCtx) {
         let HAND;
