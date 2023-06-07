@@ -1,8 +1,11 @@
 class PropertyBar {
-    constructor(id, value, onClick) {
+    constructor(id, value, onClick, min, max, step) {
         this.id = id;
         this.value = value;
         this.onClick = onClick;
+        this.min = min
+        this.max = max
+        this.step = step
     }
 
     draw() {
@@ -23,7 +26,7 @@ class PropertyBar {
         const progressBar = document.createElement("progress");
         progressBar.setAttribute("id", "dynamicProgressBar");
         progressBar.setAttribute("value", "0");
-        progressBar.setAttribute("max", "100");
+        progressBar.setAttribute("max", this.max);
 
         progressBar.style.width = "100%";
         progressBar.style.height = "30px";
@@ -31,7 +34,7 @@ class PropertyBar {
 
         progressContainer.appendChild(progressBar);
 
-        this.startProgress(progressBar);
+        // this.startProgress(progressBar);
 
         return progressContainer;
     }

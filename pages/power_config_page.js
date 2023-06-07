@@ -6,12 +6,12 @@ import OtherPage from "./other_page.js";
 import PropertyBar from "../components/property_bar.js";
 
 class PowerConfigPage {
-    constructor(min, max, value, step) {
+    constructor(min, max, value, step, unit) {
         this.min = min
         this.max = max
         this.value = value
         this.step = step
-
+        this.unit = unit;
     }
 
     draw() {
@@ -29,19 +29,18 @@ class PowerConfigPage {
 
         const propertyvalue = document.createElement('div');
         propertyvalue.className = 'property-value'
-        propertyvalue.innerHTML = this.value
+        propertyvalue.innerHTML = this.value + this.unit
         pageContent.appendChild(propertyvalue)
 
-        const propertybar = new PropertyBar('b1', this.value, () => { alert("teste!") })
+        const propertybar = new PropertyBar('b1', this.value, () => { alert("teste!") }, this.min, this.max, this.value, this.step)
 
 
 
         // const buttonsArr = [propertybar];
         // const list = new HorizontalList(buttonsArr);
 
-        const cameraFrame = new CameraFrame(propertybar);
+        const cameraFrame = new CameraFrame(propertybar, this.min, this.max, this.value, this.step, this.unit);
         pageContent.appendChild(cameraFrame.draw());
-
     }
 
     goToOtherPage() {

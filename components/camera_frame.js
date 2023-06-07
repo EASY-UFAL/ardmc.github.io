@@ -7,7 +7,7 @@ import AnalogicGesture from "../components/analogic_gesture.js";
 
 class CameraFrame {
 
-    constructor(child) {
+    constructor(child, min, max, value, step, unit) {
         this.child = child
         this.canvasRect = null;
         this.enableToClick = false;
@@ -15,6 +15,11 @@ class CameraFrame {
         sessionStorage.removeItem('previousButtonIndex');
         this.lastVideoTime = -1;
         this.isHandOpen = true;
+        this.min = min;
+        this.max = max;
+        this.value = value;
+        this.step = step;
+        this.unit = unit;
     }
 
     draw() {
@@ -60,7 +65,7 @@ class CameraFrame {
         });
         hands.onResults((results) => {
             if (this.isAnalogicPage()) {
-                const analogicGesture = new AnalogicGesture(this.child, this.outputCanvas);
+                const analogicGesture = new AnalogicGesture(this.child, this.outputCanvas, this.min, this.max, this.value, this.step, this.unit);
                 analogicGesture.init(results, this.canvasCtx);
             } else {
                 this.onHandsResult(results, this.canvasCtx)

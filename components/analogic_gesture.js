@@ -4,7 +4,7 @@ import {
 } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0";
 class AnalogicGesture {
 
-    constructor(child, outputCanvas) {
+    constructor(child, outputCanvas, min, max, value, step, unit) {
         this.child = child
         this.canvasRect = null;
         this.enableToClick = false;
@@ -13,6 +13,11 @@ class AnalogicGesture {
         this.lastVideoTime = -1;
         this.isHandOpen = true;
         this.outputCanvas = outputCanvas;
+        this.min = min
+        this.max = max
+        this.value = value
+        this.step = step
+        this.unit = unit
     }
 
     init(results, canvasCtx) {
@@ -72,11 +77,10 @@ class AnalogicGesture {
                     let hip = Math.hypot((X2 - X1) / ((Z1 + Z2) / 2), (Y2 - Y1) / ((Z1 + Z2 / 2)));
 
                     hip = this.clamp(hip, 800, 3000);
-                    let val = this.interpolate(hip, 800, 3000, 0, 100);
-
+                    let val = this.interpolate(hip, 800, 3000);
                     progressBar.value = val
 
-                    propertyValue.innerHTML = val.toFixed(0) + '%'
+                    propertyValue.innerHTML = val.toFixed(1) + this.unit
                 }
 
                 canvasCtx.beginPath();
@@ -88,13 +92,17 @@ class AnalogicGesture {
         }
         canvasCtx.restore();
     }
-    clamp(x, min_clamp, max_clamp) {
-        try {
 
+    interpolate(x, min_clamp, max_clamp) {
+        try {
             let val = parseFloat(x);
-            if (val < min_clamp) return min_clamp;
-            if (val > max_clamp) return max_clamp;
-            return val;
+            let numIntervals = (this.max - this.min) / this.step;
+            let range = (max_clamp - min_clamp) / numIntervals
+
+            let index = parseInt((val - min_clamp) / range)
+            let res = this.min + (this.step * index)
+
+            return res;
         }
         catch (e) {
             console.log(e);
@@ -102,15 +110,20 @@ class AnalogicGesture {
         return
     }
 
-    interpolate(value, oldMin, oldMax, newMin, newMax) {
-        // Faz a interpolação linear
-        const oldRange = oldMax - oldMin;
-        const newRange = newMax - newMin;
-        const newValue = ((value - oldMin) * newRange) / oldRange + newMin;
+    clamp(x, min_clamp, max_clamp) {
+        try {
+            let val = parseFloat(x);
 
-        return newValue;
+            if (val < min_clamp) return min_clamp;
+            if (val > max_clamp) return max_clamp;
+
+            return val;
+        }
+        catch (e) {
+            console.log(e);
+        }
+        return
     }
-
 
 }
 
