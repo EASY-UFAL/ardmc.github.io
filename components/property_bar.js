@@ -5,7 +5,7 @@ class PropertyBar {
         this.onClick = onClick;
     }
 
-    draw(){
+    draw() {
         // const div = document.createElement('div');
         // div.className = 'property-bar';
         // this.propertyvalue = document.createElement('div');
@@ -38,7 +38,7 @@ class PropertyBar {
 
     startProgress(progressBar) {
         var value = 0;
-        var interval = setInterval(function() {
+        var interval = setInterval(function () {
             if (value >= 100) {
                 clearInterval(interval);
             } else {
@@ -48,7 +48,7 @@ class PropertyBar {
         }, 100);
     }
 
-    clearButtons(){
+    clearButtons() {
 
     }
 
