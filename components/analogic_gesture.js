@@ -1,3 +1,10 @@
+var tempoLimite = 1000; // 1 segundo
+var tempoLimite2 = 3000; // 2 segundos
+var tempoDecorrido = 0;
+var intervaloVerificacao = 100; // Intervalo de verificação (1ms)
+var values = []
+var index = 0
+
 import {
     GestureRecognizer,
     FilesetResolver
@@ -81,6 +88,10 @@ class AnalogicGesture {
                     progressBar.value = val
 
                     propertyValue.innerHTML = val.toFixed(1) + this.unit
+
+                    console.log(tempoDecorrido, val)
+                    this.teste(val)
+
                 }
 
                 canvasCtx.beginPath();
@@ -91,6 +102,23 @@ class AnalogicGesture {
             }
         }
         canvasCtx.restore();
+    }
+
+    teste(val) {
+        if (tempoDecorrido == 0) {
+            values.push(val)
+            tempoDecorrido += intervaloVerificacao;
+        } else if (((val != this.min && val != this.max) && tempoDecorrido == tempoLimite) || ((val == this.min || val == this.max) && tempoDecorrido == tempoLimite2)) {
+            alert("tempo atingido")
+            tempoDecorrido = 0
+            values.pop()
+        } else if (val == values[0]) {
+            tempoDecorrido += intervaloVerificacao;
+        } else {
+            values.pop()
+            tempoDecorrido = 0
+        }
+
     }
 
     interpolate(x, min_clamp, max_clamp) {
