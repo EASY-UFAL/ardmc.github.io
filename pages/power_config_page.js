@@ -1,7 +1,6 @@
 import Button from "../components/button.js";
 import HorizontalList from "../components/horizontal_list.js";
 import CameraFrame from "../components/camera_frame.js";
-import AnalogicGesture from "../components/analogic_gesture.js";
 import OtherPage from "./other_page.js";
 import PropertyBar from "../components/property_bar.js";
 
