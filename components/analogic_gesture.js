@@ -5,6 +5,8 @@ var intervaloVerificacao = 100; // Intervalo de verificação (1ms)
 var values = []
 var updatedValue = -1
 var canEditValue = -1
+var alerta1 = 1
+var alerta2 = 1
 
 class AnalogicGesture {
 
@@ -28,6 +30,7 @@ class AnalogicGesture {
 
         var progressBar = document.getElementById('dynamicProgressBar');
         var propertyValue = document.getElementsByClassName('property-value')[0];
+        if (alerta1 == 1) this.exibirAlerta("Faça um gesto de 'paz e amor' para entrar na tela de edição.");
 
         if (results.multiHandLandmarks.length > 0) {
             HAND = results.multiHandLandmarks;
@@ -96,7 +99,9 @@ class AnalogicGesture {
             } else {
                 propertyValue.innerHTML = updatedValue + this.unit
                 this.draw(HAND, canvasCtx)
-                alert("O valor foi alterado com sucesso")
+                updatedValue = -1
+                canEditValue = -1
+                if (alerta2 == 1) this.exibirAlerta("O valor foi alterado com sucesso!");
             }
         }
         canvasCtx.restore();
@@ -189,6 +194,25 @@ class AnalogicGesture {
             console.log(e);
         }
         return
+    }
+
+    exibirAlerta(mensagem) {
+        const alerta = document.createElement('div');
+        alerta.textContent = mensagem;
+        alerta.style.position = 'fixed';
+        alerta.style.top = '50%';
+        alerta.style.left = '50%';
+        alerta.style.transform = 'translate(-50%, -50%)';
+        alerta.style.padding = '10px';
+        alerta.style.background = 'yellow';
+        alerta.style.border = '1px solid black';
+        alerta.style.fontSize = '16px';
+
+        document.body.appendChild(alerta);
+        alerta1 = -1
+        setTimeout(() => {
+            alerta.style.display = 'none';
+        }, 2000);
     }
 
 }
