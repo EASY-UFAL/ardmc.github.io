@@ -1,5 +1,4 @@
 import {
-    GestureRecognizer,
     FilesetResolver
 } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0";
 
@@ -75,44 +74,16 @@ class CameraFrame {
         const vision = await FilesetResolver.forVisionTasks(
             "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
         );
-        const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
-            baseOptions: {
-                modelAssetPath:
-                    "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task"
-            },
-            runningMode: "VIDEO"
-        });
 
         const camera = new Camera(this.videoElement, {
             onFrame: async () => {
                 await hands.send({ image: this.videoElement });
-                let nowInMs = Date.now();
-                if (this.videoElement.currentTime !== this.lastVideoTime) {
-                    this.lastVideoTime = this.videoElement.currentTime;
-                    let results = gestureRecognizer.recognizeForVideo(this.videoElement, nowInMs);
-                    this.onGestureRecognizerResult(results);
-                }
             },
             width: 640,
             height: 340
         });
 
         camera.start();
-    }
-
-    onGestureRecognizerResult(results) {
-        if (results.gestures.length > 0) {
-            const categoryName = results.gestures[0][0].categoryName;
-            const categoryScore = parseFloat(
-                results.gestures[0][0].score * 100
-            ).toFixed(2);
-            // console.log(`GestureRecognizer: ${categoryName}\n Confidence: ${categoryScore} %`);
-            if (categoryName === 'Closed_Fist') {
-                this.isHandOpen = false;
-            } else if (categoryName === 'Open_Palm') {
-                this.isHandOpen = true;
-            }
-        }
     }
 
     onHandsResult(results, canvasCtx) {
@@ -169,7 +140,7 @@ class CameraFrame {
                     if (buttonElement != null) {
                         buttonElement.style.borderColor = 'red';
 
-                        if (z < 0.005 && this.enableToClick && this.isHandOpen) {
+                        if (z < 0.005 && this.enableToClick) {
                             // console.log(buttonElement.id, this.child.currentSlide);
                             // if(buttonElement.id == this.child.currentSlide){
                             buttonElement.click();
@@ -202,8 +173,7 @@ class CameraFrame {
 
         const previousPalmBaseX = sessionStorage.getItem('previousPalmBaseX');
         const previousButtonIndex = parseInt(sessionStorage.getItem('previousButtonIndex'));
-        // const handClosed = this.isHandClosed(handLandmarks);
-        const handClosed = !this.isHandOpen;
+        const handClosed = this.isHandClosed(handLandmarks);
 
         if (previousPalmBaseX && handClosed) {
             const deltaX = palmBaseX - previousPalmBaseX;
@@ -226,26 +196,25 @@ class CameraFrame {
     }
 
 
-    // isHandClosed(handLandmarks) {
-    // Reference points for each finger
-    // const fingerIndices = [8, 12, 16, 20];
+    isHandClosed(handLandmarks) {
+        const fingerIndices = [8, 12, 16, 20];
 
-    // // Threshold x to consider hand closed
-    // const xProximityThreshold = 0.1;
+        // Threshold x to consider hand closed
+        const xProximityThreshold = 0.1;
 
-    // // X reference coordinate, using first finger
-    // const referenceX = handLandmarks[fingerIndices[0]].x;
+        // X reference coordinate, using first finger
+        const referenceX = handLandmarks[fingerIndices[0]].x;
 
-    // // Check if x coordinates of another fingers are close enough
-    // for (let i = 1; i < fingerIndices.length; i++) {
-    //     const currentX = handLandmarks[fingerIndices[i]].x;
-    //     if (Math.abs(currentX - referenceX) > xProximityThreshold) {
-    //         return false; // Coordinates X are not close enough, so hand is not closed
-    //     }
-    // }
+        // Check if x coordinates of another fingers are close enough
+        for (let i = 1; i < fingerIndices.length; i++) {
+            const currentX = handLandmarks[fingerIndices[i]].x;
+            if (Math.abs(currentX - referenceX) > xProximityThreshold) {
+                return false; // Coordinates X are not close enough, so hand is not closed
+            }
+        }
 
-    // return true; // Coordinates X are close enough, so hand is closed
-    // }
+        return true; // Coordinates X are close enough, so hand is closed
+    }
 
     isAnalogicPage() {
         let pageContent = document.getElementsByClassName('analogic-page');
