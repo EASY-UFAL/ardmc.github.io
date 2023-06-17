@@ -10,12 +10,12 @@ class CameraFrame {
     sessionStorage.removeItem("previousPalmBaseX");
     sessionStorage.removeItem("previousButtonIndex");
     this.lastVideoTime = -1;
-    this.isHandOpen = true;
     this.min = min;
     this.max = max;
     this.value = value;
     this.step = step;
     this.unit = unit;
+    this.handOpen = true;
   }
 
   draw() {
@@ -59,7 +59,7 @@ class CameraFrame {
       minTrackingConfidence: 0.5,
     });
     hands.onResults((results) => {
-      results = this.normalizeHand(results);
+      // results = this.normalizeHand(results);
       if (this.isAnalogicPage()) {
         const analogicGesture = new AnalogicGesture(
           this.child,
@@ -142,14 +142,14 @@ class CameraFrame {
             markColor = "red";
           } else {
             markColor = "blue";
-            if (z < 0.005) this.enableToClick = true;
+            if (z < 0.02) this.enableToClick = true;
           }
           if (buttonElement != null) {
+            console.log(z);
             buttonElement.style.borderColor = "red";
-
-            if (z < 0.005 && this.enableToClick) {
+            if (z < 0.02 && this.enableToClick && this.handOpen) {
               // console.log(buttonElement.id, this.child.currentSlide);
-              // if(buttonElement.id == this.child.currentSlide){
+              // if(buttonElement.id == this.child.currentSlide){\
               buttonElement.click();
               // }else{
               // this.child.slideTo(buttonElement);
@@ -182,7 +182,8 @@ class CameraFrame {
     const previousButtonIndex = parseInt(
       sessionStorage.getItem("previousButtonIndex")
     );
-    const handClosed = this.isHandClosed(handLandmarks);
+    this.handOpen = this.isHandOpen(handLandmarks);
+    const handClosed = !this.isHandOpen(handLandmarks);
 
     if (previousPalmBaseX && handClosed) {
       const deltaX = palmBaseX - previousPalmBaseX;
@@ -190,7 +191,11 @@ class CameraFrame {
       const movementThreshold = 0.001;
 
       if (Math.abs(deltaX) > movementThreshold) {
-        // console.log(buttonIndexAdd, previousButtonIndex, buttonIndexAdd - previousButtonIndex);
+        console.log(
+          buttonIndexAdd,
+          previousButtonIndex,
+          buttonIndexAdd - previousButtonIndex
+        );
         this.child.slideToIndex(previousButtonIndex + buttonIndexAdd);
       }
     }
@@ -205,6 +210,7 @@ class CameraFrame {
   }
 
   isHandClosed(handLandmarks) {
+    // Reference points for each finger
     const fingerIndices = [8, 12, 16, 20];
 
     // Threshold x to consider hand closed
@@ -222,6 +228,16 @@ class CameraFrame {
     }
 
     return true; // Coordinates X are close enough, so hand is closed
+  }
+
+  isHandOpen(HAND) {
+    return (
+      HAND[4].y < HAND[2].y &&
+      HAND[8].y < HAND[6].y &&
+      HAND[12].y < HAND[10].y &&
+      HAND[16].y < HAND[14].y &&
+      HAND[20].y < HAND[18].y
+    );
   }
 
   isAnalogicPage() {
