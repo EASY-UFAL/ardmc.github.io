@@ -15,7 +15,7 @@ class OtherPage {
         header.className = 'header';
         const pageTitle = document.createElement('div');
         pageTitle.className = 'text-menu';
-        pageTitle.innerHTML = 'Menu Secundário';
+        pageTitle.innerHTML = 'Cirurgia';
         header.appendChild(pageTitle);
 
         pageContent.appendChild(header);

@@ -40,7 +40,6 @@ class ContinuousModePage {
         const page = new SurgeryPage();
         page.draw();
     }
-    
 }
 
 export default ContinuousModePage;
