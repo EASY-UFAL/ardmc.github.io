@@ -23,7 +23,7 @@
   .button-action {
     width: 350px;
     height: 150px;
-    background-color: #C7C7C7; /*Caso precise checar a mão interagindo com o botão, mudar a cor para transparent*/
+    background-color: transparent; /*Caso precise checar a mão interagindo com o botão, mudar a cor para transparent*/
     border-radius: 8px;
     color: #23356A;
     cursor: pointer;

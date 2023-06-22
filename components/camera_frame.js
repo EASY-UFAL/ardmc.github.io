@@ -1,6 +1,7 @@
 import { FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0";
 
 import AnalogicGesture from "../components/analogic_gesture.js";
+import CountFingersGesture from "../components/count_fingers_gesture.js";
 
 class CameraFrame {
   constructor(child, min, max, value, step, unit) {
@@ -61,7 +62,7 @@ class CameraFrame {
     hands.onResults((results) => {
       // results = this.normalizeHand(results);
       if (this.isAnalogicPage()) {
-        const analogicGesture = new AnalogicGesture(
+        const analogicGesture = new CountFingersGesture(
           this.child,
           this.outputCanvas,
           this.min,
