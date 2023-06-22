@@ -1,7 +1,10 @@
 import Button from "../components/button.js";
 import HorizontalList from "../components/horizontal_list.js";
 import CameraFrame from "../components/camera_frame.js";
+import SurgeryPage from "./surgery_page.js";
 import ContinuousModePage from "./continuous_mode_page.js";
+import PulsedModePage from "./pulsed_mode_page.js";
+import SinglePulsePage from "./single_pulse_page.js";
 class ModeConfigurationPage {
     constructor() {}
 
@@ -19,8 +22,8 @@ class ModeConfigurationPage {
         pageContent.appendChild(header);
 
         const button1 = new Button('b1', 'Contínuo', ()=>{this.goToContinuousModePage()});
-        const button2 = new Button('b2', 'Pulsado', ()=>{alert('Modo Pulsado')});
-        const button3 = new Button('b3', 'Pulso Único', ()=>{alert('Pulso Único')});
+        const button2 = new Button('b2', 'Pulsado', ()=>{this.goToPulsedModePage()});
+        const button3 = new Button('b3', 'Pulso Único', ()=>{this.goToSinglePulsePage()});
         const button4 = new Button('b4', 'Voltar', ()=>{this.goToSurgeryPage()});
 
         const buttonsArr = [button1, button2, button3, button4];
@@ -32,9 +35,20 @@ class ModeConfigurationPage {
 
     }
 
+
     goToContinuousModePage() {
         const page = new ContinuousModePage();
         page.draw();
+    }
+
+    goToPulsedModePage(){
+        const page = new PulsedModePage();
+        page.draw();
+    }
+
+    goToSinglePulsePage(){
+        const page = new SinglePulsePage()
+        page.draw()
     }
     goToSurgeryPage() {
         const page = new SurgeryPage();
