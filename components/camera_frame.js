@@ -4,8 +4,9 @@ import AnalogicGesture from "../components/analogic_gesture.js";
 import CountFingersGesture from "../components/count_fingers_gesture.js";
 
 class CameraFrame {
-  constructor(child, min, max, value, step, unit) {
+  constructor(child, id, min, max, value, step, unit) {
     this.child = child;
+    this.id = id;
     this.canvasRect = null;
     this.enableToClick = false;
     sessionStorage.removeItem("previousPalmBaseX");
@@ -62,7 +63,7 @@ class CameraFrame {
     hands.onResults((results) => {
       // results = this.normalizeHand(results);
       if (this.isAnalogicPage()) {
-        const analogicGesture = new CountFingersGesture(
+        const analogicGesture = new AnalogicGesture(
           this.child,
           this.outputCanvas,
           this.min,
@@ -72,6 +73,18 @@ class CameraFrame {
           this.unit
         );
         analogicGesture.init(results, this.canvasCtx);
+      } else if (this.isDigitalPage()) {
+        const digitalGesture = new CountFingersGesture(
+          this.child,
+          this.id,
+          this.outputCanvas,
+          this.min,
+          this.max,
+          this.value,
+          this.step,
+          this.unit
+        );
+        digitalGesture.init(results, this.canvasCtx);
       } else {
         this.onHandsResult(results, this.canvasCtx);
       }
@@ -243,6 +256,15 @@ class CameraFrame {
 
   isAnalogicPage() {
     let pageContent = document.getElementsByClassName("analogic-page");
+    if (pageContent.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isDigitalPage() {
+    let pageContent = document.getElementsByClassName("digital-page");
     if (pageContent.length > 0) {
       return true;
     } else {

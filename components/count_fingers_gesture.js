@@ -3,10 +3,14 @@ const indexFingerIndexes = [5, 6, 7, 8];
 const middleFingerIndexes = [9, 10, 11, 12];
 const ringFingerIndexes = [13, 14, 15, 16];
 const pinkyFingerIndexes = [17, 18, 19, 20];
+let increaseTimeOut = 0;
+let decreaseTimeOut = 0;
+let canEditValue = 0;
 
 class CountFingersGesture {
-  constructor(child, outputCanvas, min, max, value, step, unit) {
+  constructor(child, id, outputCanvas, min, max, value, step, unit) {
     this.child = child;
+    this.id = id;
     this.outputCanvas = outputCanvas;
     this.min = min;
     this.max = max;
@@ -32,19 +36,26 @@ class CountFingersGesture {
       HAND = results.multiHandLandmarks;
 
       let quantityFingersUp = this.quantityFingersUp(HAND[0]);
+      console.log(quantityFingersUp);
 
-      switch (quantityFingersUp) {
-        case 0:
-          break;
-        case 1:
-          break;
-        case 2:
-          break;
-        case 5:
-          break;
-
-        default:
-          break;
+      if (canEditValue) {
+        switch (quantityFingersUp) {
+          case 1:
+            this.increaseValue();
+            break;
+          case 2:
+            this.decreaseValue();
+            break;
+          case 3:
+            canEditValue = 0;
+            break;
+          case 5:
+            break;
+          default:
+            break;
+        }
+      } else if (quantityFingersUp == 0) {
+        canEditValue = 1;
       }
     }
   }
@@ -73,6 +84,32 @@ class CountFingersGesture {
     this.isFingerUp(HAND, pinkyFingerIndexes) ? count++ : count;
 
     return count;
+  }
+
+  increaseValue() {
+    let pageContent = document.getElementById(this.id);
+    if (pageContent.value <= this.max) {
+      if (increaseTimeOut == 3) {
+        pageContent.value += this.step;
+        pageContent.innerHTML = pageContent.value.toFixed(1) + this.unit;
+        increaseTimeOut = 0;
+      } else {
+        increaseTimeOut++;
+      }
+    }
+  }
+
+  decreaseValue() {
+    let pageContent = document.getElementById(this.id);
+    if (pageContent.value >= this.min) {
+      if (decreaseTimeOut == 3) {
+        pageContent.value -= this.step;
+        pageContent.innerHTML = pageContent.value.toFixed(1) + this.unit;
+        decreaseTimeOut = 0;
+      } else {
+        decreaseTimeOut++;
+      }
+    }
   }
 }
 
