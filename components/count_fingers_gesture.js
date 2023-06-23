@@ -34,6 +34,7 @@ class CountFingersGesture {
 
     if (results.multiHandLandmarks.length > 0) {
       HAND = results.multiHandLandmarks;
+      this.draw(HAND[0], canvasCtx);
 
       let quantityFingersUp = this.quantityFingersUp(HAND[0]);
       console.log(quantityFingersUp);
@@ -57,6 +58,32 @@ class CountFingersGesture {
       } else if (quantityFingersUp == 0) {
         canEditValue = 1;
       }
+    }
+  }
+
+  draw(HAND, canvasCtx) {
+    for (let i = 0; i < HAND.length; i++) {
+      let landmarks = HAND[i];
+
+      let x = landmarks.x * this.outputCanvas.width;
+      let y = landmarks.y * this.outputCanvas.height;
+      let z = Math.abs(landmarks.z);
+      let markColor = "black";
+
+      if (
+        (this.isFingerUp(HAND, thumbFingerIndexes, true) && i == 4) ||
+        (this.isFingerUp(HAND, indexFingerIndexes) && i == 8) ||
+        (this.isFingerUp(HAND, middleFingerIndexes) && i == 12) ||
+        (this.isFingerUp(HAND, ringFingerIndexes) && i == 16) ||
+        (this.isFingerUp(HAND, pinkyFingerIndexes) && i == 20)
+      ) {
+        markColor = "blue";
+      }
+      canvasCtx.beginPath();
+      canvasCtx.arc(x, y, 100 * z, 0, 2 * Math.PI);
+      canvasCtx.fillStyle = markColor;
+      canvasCtx.fill();
+      canvasCtx.stroke();
     }
   }
 
