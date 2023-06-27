@@ -12,6 +12,7 @@
     display: grid;
     place-items: center;
     background-color: #FEFEFD;
+    width: 420px;
   }
   
   .text-menu {
@@ -20,15 +21,16 @@
   }
   
   .button-action {
-    width: 100%;
-    height: 100%;
-    background-color: #C7C7C7; /*Caso precise checar a mão interagindo com o botão, mudar a cor para transparent*/
+    width: 350px;
+    height: 150px;
+    background-color: transparent; /*Caso precise checar a mão interagindo com o botão, mudar a cor para transparent*/
     border-radius: 8px;
     color: #23356A;
     cursor: pointer;
     display: inline-block;
     text-align: center;
     z-index: 10px;
+    position: absolute;
    }
 
    .screen{
@@ -50,11 +52,13 @@
     }
    
   .slider {
-    width: 100%;
+    width: 640px;
+    height: 400px;
     max-width: 800px;
     height: 280px;
     position: relative;
     border-radius: 15px;
+    overflow: hidden;
   }
   
   .slide {
