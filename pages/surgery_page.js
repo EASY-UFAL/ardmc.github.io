@@ -116,7 +116,14 @@ class SurgeryPage {
   }
 
   goToPowerConfigPage() {
-    const page = new PowerConfigPage(0.5, 9, 0.5, 0.5, "W");
+    const page = new PowerConfigPage(
+      "power-config-page",
+      0.5,
+      9,
+      0.5,
+      0.5,
+      "W"
+    );
     page.draw();
   }
   goToResetTimerPage() {

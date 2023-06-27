@@ -5,7 +5,8 @@ import OtherPage from "./other_page.js";
 import PropertyBar from "../components/property_bar.js";
 
 class PowerConfigPage {
-  constructor(min, max, value, step, unit) {
+  constructor(id, min, max, value, step, unit) {
+    this.id = id;
     this.min = min;
     this.max = max;
     this.value = value;
@@ -48,6 +49,7 @@ class PowerConfigPage {
 
     const cameraFrame = new CameraFrame(
       propertybar,
+      this.id,
       this.min,
       this.max,
       this.value,
