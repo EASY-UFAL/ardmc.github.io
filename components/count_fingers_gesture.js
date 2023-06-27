@@ -1,3 +1,5 @@
+import RepetitionConfigPage from "../pages/repetition_config_page.js";
+
 const thumbFingerIndexes = [1, 2, 3, 4];
 const indexFingerIndexes = [5, 6, 7, 8];
 const middleFingerIndexes = [9, 10, 11, 12];
@@ -31,6 +33,9 @@ class CountFingersGesture {
     );
 
     this.child.clearButtons();
+    var progressBar = document.getElementById("dynamicProgressBar");
+    let pageContent = document.getElementById(this.id);
+    console.log(pageContent, pageContent.value);
 
     if (results.multiHandLandmarks.length > 0) {
       HAND = results.multiHandLandmarks;
@@ -40,6 +45,7 @@ class CountFingersGesture {
       console.log(quantityFingersUp);
 
       if (canEditValue) {
+        progressBar.value = pageContent.value;
         switch (quantityFingersUp) {
           case 1:
             this.increaseValue();
@@ -47,7 +53,7 @@ class CountFingersGesture {
           case 2:
             this.decreaseValue();
             break;
-          case 3:
+          case 4:
             canEditValue = 0;
             break;
           case 5:

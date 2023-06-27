@@ -101,7 +101,7 @@ class PulsedModePage {
       33.3,
       1000,
       33.3,
-      0.01,
+      0.1,
       "Hz"
     );
     page.draw();
