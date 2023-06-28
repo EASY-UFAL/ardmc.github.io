@@ -19,15 +19,15 @@ function getDegreeBetweenTwoPoints(X1, X2, Y1, Y2) {
   return theta;
 }
 
-function showMessage(mensagem) {
+function showMessage(mensagem, position = "50%", color = "yellow") {
   const alerta = document.createElement("div");
   alerta.textContent = mensagem;
   alerta.style.position = "fixed";
-  alerta.style.top = "50%";
+  alerta.style.top = position;
   alerta.style.left = "50%";
   alerta.style.transform = "translate(-50%, -50%)";
   alerta.style.padding = "10px";
-  alerta.style.background = "yellow";
+  alerta.style.background = color;
   alerta.style.border = "1px solid black";
   alerta.style.fontSize = "16px";
 

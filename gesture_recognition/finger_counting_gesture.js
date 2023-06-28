@@ -37,7 +37,12 @@ class FingerCountingGesture {
       HAND = results.multiHandLandmarks;
       this.draw(HAND[0], canvasCtx);
 
+      showMessage(
+        "Feche a mão para entrar no modo de edição.\nLevante 1 dedo para incrementar o valor, 2 dedos para decrementar, 4 para confirmar e 5 para sair da página."
+      );
+
       let quantityFingersUp = this.getRaisedFingersCount(HAND[0]);
+      showMessage(`Você está com ${quantityFingersUp} dedos levantados`, "70%");
 
       if (canEditValue) {
         progressBar.value = pageContent.value;
@@ -50,6 +55,7 @@ class FingerCountingGesture {
             break;
           case 4:
             canEditValue = 0;
+            showMessage("Valor atualizado com sucesso!", "25%", "green");
             break;
           case 5:
             break;
