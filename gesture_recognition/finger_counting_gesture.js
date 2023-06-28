@@ -1,5 +1,3 @@
-import RepetitionConfigPage from "../pages/repetition_config_page.js";
-
 const thumbFingerIndexes = [1, 2, 3, 4];
 const indexFingerIndexes = [5, 6, 7, 8];
 const middleFingerIndexes = [9, 10, 11, 12];
@@ -8,8 +6,7 @@ const pinkyFingerIndexes = [17, 18, 19, 20];
 let increaseTimeOut = 0;
 let decreaseTimeOut = 0;
 let canEditValue = 0;
-
-class CountFingersGesture {
+class FingerCountingGesture {
   constructor(child, id, outputCanvas, min, max, value, step, unit) {
     this.child = child;
     this.id = id;
@@ -35,14 +32,12 @@ class CountFingersGesture {
     this.child.clearButtons();
     var progressBar = document.getElementById("dynamicProgressBar");
     let pageContent = document.getElementById(this.id);
-    console.log(pageContent, pageContent.value);
 
     if (results.multiHandLandmarks.length > 0) {
       HAND = results.multiHandLandmarks;
       this.draw(HAND[0], canvasCtx);
 
-      let quantityFingersUp = this.quantityFingersUp(HAND[0]);
-      console.log(quantityFingersUp);
+      let quantityFingersUp = this.getRaisedFingersCount(HAND[0]);
 
       if (canEditValue) {
         progressBar.value = pageContent.value;
@@ -77,11 +72,11 @@ class CountFingersGesture {
       let markColor = "black";
 
       if (
-        (this.isFingerUp(HAND, thumbFingerIndexes, true) && i == 4) ||
-        (this.isFingerUp(HAND, indexFingerIndexes) && i == 8) ||
-        (this.isFingerUp(HAND, middleFingerIndexes) && i == 12) ||
-        (this.isFingerUp(HAND, ringFingerIndexes) && i == 16) ||
-        (this.isFingerUp(HAND, pinkyFingerIndexes) && i == 20)
+        (isFingerUp(HAND, thumbFingerIndexes, true) && i == 4) ||
+        (isFingerUp(HAND, indexFingerIndexes) && i == 8) ||
+        (isFingerUp(HAND, middleFingerIndexes) && i == 12) ||
+        (isFingerUp(HAND, ringFingerIndexes) && i == 16) ||
+        (isFingerUp(HAND, pinkyFingerIndexes) && i == 20)
       ) {
         markColor = "blue";
       }
@@ -93,28 +88,13 @@ class CountFingersGesture {
     }
   }
 
-  isFingerUp(HAND, indexes, isThumbFinger) {
-    if (isThumbFinger) {
-      var result =
-        HAND[indexes[0]].x < HAND[indexes[1]].x &&
-        HAND[indexes[1]].x < HAND[indexes[2]].x &&
-        HAND[indexes[2]].x < HAND[indexes[3]].x;
-    } else {
-      var result =
-        HAND[indexes[0]].y > HAND[indexes[1]].y &&
-        HAND[indexes[1]].y > HAND[indexes[2]].y &&
-        HAND[indexes[2]].y > HAND[indexes[3]].y;
-    }
-    return result;
-  }
-
-  quantityFingersUp(HAND) {
+  getRaisedFingersCount(HAND) {
     let count = 0;
-    this.isFingerUp(HAND, thumbFingerIndexes, true) ? count++ : count;
-    this.isFingerUp(HAND, indexFingerIndexes) ? count++ : count;
-    this.isFingerUp(HAND, middleFingerIndexes) ? count++ : count;
-    this.isFingerUp(HAND, ringFingerIndexes) ? count++ : count;
-    this.isFingerUp(HAND, pinkyFingerIndexes) ? count++ : count;
+    isFingerUp(HAND, thumbFingerIndexes, true) ? count++ : count;
+    isFingerUp(HAND, indexFingerIndexes) ? count++ : count;
+    isFingerUp(HAND, middleFingerIndexes) ? count++ : count;
+    isFingerUp(HAND, ringFingerIndexes) ? count++ : count;
+    isFingerUp(HAND, pinkyFingerIndexes) ? count++ : count;
 
     return count;
   }
@@ -146,4 +126,4 @@ class CountFingersGesture {
   }
 }
 
-export default CountFingersGesture;
+export default FingerCountingGesture;

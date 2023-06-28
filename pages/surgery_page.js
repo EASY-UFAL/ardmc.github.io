@@ -1,6 +1,6 @@
 import Button from "../components/button.js";
 import HorizontalList from "../components/horizontal_list.js";
-import CameraFrame from "../components/camera_frame.js";
+import CameraFrame from "../gesture_recognition/camera_frame.js";
 import PropertyButton from "../components/property_button.js";
 import MainPage from "./main_page.js";
 import ModeConfigurationPage from "./mode_configuration_page.js";

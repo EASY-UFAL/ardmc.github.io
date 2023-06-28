@@ -1,7 +1,7 @@
 import { FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0";
 
-import AnalogicGesture from "../components/analogic_gesture.js";
-import CountFingersGesture from "../components/count_fingers_gesture.js";
+import PinchGesture from "./pinch_gesture.js";
+import FingerCountingGesture from "./finger_counting_gesture.js";
 
 class CameraFrame {
   constructor(child, id, min, max, value, step, unit) {
@@ -62,8 +62,8 @@ class CameraFrame {
     });
     hands.onResults((results) => {
       // results = this.normalizeHand(results);
-      if (this.isAnalogicPage()) {
-        const analogicGesture = new AnalogicGesture(
+      if (isAnalogicPage()) {
+        const pinchGesture = new PinchGesture(
           this.child,
           this.outputCanvas,
           this.min,
@@ -72,9 +72,9 @@ class CameraFrame {
           this.step,
           this.unit
         );
-        analogicGesture.init(results, this.canvasCtx);
-      } else if (this.isDigitalPage()) {
-        const digitalGesture = new CountFingersGesture(
+        pinchGesture.init(results, this.canvasCtx);
+      } else if (isDigitalPage()) {
+        const digitalGesture = new FingerCountingGesture(
           this.child,
           this.id,
           this.outputCanvas,
@@ -89,10 +89,6 @@ class CameraFrame {
         this.onHandsResult(results, this.canvasCtx);
       }
     });
-
-    const vision = await FilesetResolver.forVisionTasks(
-      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
-    );
 
     const camera = new Camera(this.videoElement, {
       onFrame: async () => {
@@ -134,14 +130,12 @@ class CameraFrame {
         let markColor = "black";
 
         if (i === 8) {
-          // POINTER FINGER
           let rect = this.canvasRect;
           let xM = landmarks.x * (rect.right - rect.left) + rect.left;
           let yM = landmarks.y * (rect.bottom - rect.top) + rect.top;
 
           const elements = document.elementsFromPoint(xM, yM);
 
-          // IDENTIFICANDO BOTÃO SELECIONADO PELO DEDO INDICADOR
           let buttonElement = null;
 
           for (const element of elements) {
@@ -150,7 +144,6 @@ class CameraFrame {
               break;
             }
           }
-          // console.log(z)
 
           if (z > 0.1) {
             markColor = "red";
@@ -159,15 +152,9 @@ class CameraFrame {
             if (z < 0.02) this.enableToClick = true;
           }
           if (buttonElement != null) {
-            console.log(z);
             buttonElement.style.borderColor = "red";
             if (z < 0.02 && this.enableToClick && this.handOpen) {
-              // console.log(buttonElement.id, this.child.currentSlide);
-              // if(buttonElement.id == this.child.currentSlide){\
               buttonElement.click();
-              // }else{
-              // this.child.slideTo(buttonElement);
-              // }
               this.enableToClick = false;
             }
           }
@@ -196,8 +183,8 @@ class CameraFrame {
     const previousButtonIndex = parseInt(
       sessionStorage.getItem("previousButtonIndex")
     );
-    this.handOpen = this.isHandOpen(handLandmarks);
-    const handClosed = !this.isHandOpen(handLandmarks);
+    this.handOpen = isHandOpen(handLandmarks);
+    const handClosed = !isHandOpen(handLandmarks);
 
     if (previousPalmBaseX && handClosed) {
       const deltaX = palmBaseX - previousPalmBaseX;
@@ -205,11 +192,6 @@ class CameraFrame {
       const movementThreshold = 0.001;
 
       if (Math.abs(deltaX) > movementThreshold) {
-        console.log(
-          buttonIndexAdd,
-          previousButtonIndex,
-          buttonIndexAdd - previousButtonIndex
-        );
         this.child.slideToIndex(previousButtonIndex + buttonIndexAdd);
       }
     }
@@ -221,63 +203,6 @@ class CameraFrame {
       sessionStorage.removeItem("previousPalmBaseX");
       sessionStorage.removeItem("previousButtonIndex");
     }
-  }
-
-  isHandClosed(handLandmarks) {
-    // Reference points for each finger
-    const fingerIndices = [8, 12, 16, 20];
-
-    // Threshold x to consider hand closed
-    const xProximityThreshold = 0.1;
-
-    // X reference coordinate, using first finger
-    const referenceX = handLandmarks[fingerIndices[0]].x;
-
-    // Check if x coordinates of another fingers are close enough
-    for (let i = 1; i < fingerIndices.length; i++) {
-      const currentX = handLandmarks[fingerIndices[i]].x;
-      if (Math.abs(currentX - referenceX) > xProximityThreshold) {
-        return false; // Coordinates X are not close enough, so hand is not closed
-      }
-    }
-
-    return true; // Coordinates X are close enough, so hand is closed
-  }
-
-  isHandOpen(HAND) {
-    return (
-      HAND[4].y < HAND[2].y &&
-      HAND[8].y < HAND[6].y &&
-      HAND[12].y < HAND[10].y &&
-      HAND[16].y < HAND[14].y &&
-      HAND[20].y < HAND[18].y
-    );
-  }
-
-  isAnalogicPage() {
-    let pageContent = document.getElementsByClassName("analogic-page");
-    if (pageContent.length > 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  isDigitalPage() {
-    let pageContent = document.getElementsByClassName("digital-page");
-    if (pageContent.length > 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  calculateDistance(point1, point2) {
-    return Math.sqrt(
-      (point2.x - point1.x) ** 2 +
-        (point2.y - point1.y) ** 2 +
-        (point2.z - point1.z) ** 2
-    );
   }
 
   calculateHandCentroid(HAND) {
@@ -297,7 +222,7 @@ class CameraFrame {
   normalizeHand(results) {
     let HAND = results.multiHandLandmarks;
     if (HAND[0] != undefined) {
-      let distance = this.calculateDistance(HAND[0][0], HAND[0][9]);
+      let distance = getDistanceBetweenTwoPoints(HAND[0][0], HAND[0][9]);
       let handCentroid = this.calculateHandCentroid(HAND);
       for (let i = 0; i < HAND[0].length; i++) {
         let landmarks = HAND[0][i];
