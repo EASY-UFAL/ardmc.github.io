@@ -6,8 +6,8 @@ let lineColor = "black";
 let values = [];
 var canEditValue = false;
 
-const min_clamp = 400;
-const max_clamp = 2600;
+const min_clamp = 0.0;
+const max_clamp = 1.0;
 
 class PinchGesture {
   constructor(child, outputCanvas, min, max, value, step, unit) {
@@ -44,6 +44,9 @@ class PinchGesture {
 
     if (results.multiHandLandmarks.length > 0) {
       HAND = results.multiHandLandmarks;
+
+      // draw hands
+      // calc distance
       if (updatedValue == -1) {
         if (isPeaceAndLove(HAND)) {
           canEditValue = true;
@@ -93,18 +96,26 @@ class PinchGesture {
               canvasCtx.fillStyle = "green";
               canvasCtx.fill();
 
-              let hip = Math.hypot(
-                (X2 - X1) / ((Z1 + Z2) / 2),
-                (Y2 - Y1) / (Z1 + Z2 / 2)
-              );
+              // let hip = Math.hypot(
+              //   (X2 - X1) / ((Z1 + Z2) / 2),
+              //   (Y2 - Y1) / (Z1 + Z2 / 2)
+              // );
 
-              hip = clamp(hip, min_clamp, max_clamp);
-              if (Math.abs(oldValuesArray[0] - hip) < 150) {
-                oldValuesArray.push(oldValuesArray[0]);
-              } else {
-                oldValuesArray.push(hip);
-              }
-              let val = filterMeasurement(0.5, oldValuesArray[0], hip);
+              let dist = Math.sqrt(
+                Math.pow(coords1.x - coords2.x, 2) +
+                  Math.pow(coords1.y - coords2.y, 2)
+              );
+              console.log(dist);
+
+              dist = clamp(dist, min_clamp, max_clamp);
+              // if (Math.abs(oldValuesArray[0] - dist) < 150) {
+              //   oldValuesArray.push(oldValuesArray[0]);
+              // } else {
+              //   oldValuesArray.push(dist);
+              // }
+
+              oldValuesArray.push(dist);
+              let val = filterMeasurement(0.05, oldValuesArray[0], dist);
               oldValuesArray.shift();
 
               val = interpolate(
