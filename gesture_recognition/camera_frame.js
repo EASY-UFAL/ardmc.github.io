@@ -61,7 +61,7 @@ class CameraFrame {
       minTrackingConfidence: 0.5,
     });
     hands.onResults((results) => {
-      // results = this.normalizeHand(results);
+      results = this.normalizeHand(results);
       if (isAnalogicPage()) {
         const pinchGesture = new PinchGesture(
           this.child,
@@ -232,7 +232,7 @@ class CameraFrame {
         results.multiHandLandmarks[0][i].y =
           0.5 * ((landmarks.y - 0.5) / distance) + 0.5;
         results.multiHandLandmarks[0][i].z =
-          0.5 * ((landmarks.z - 0.5) / distance) + 0.5;
+          0.5 * ((landmarks.z - 0.5) / distance);
       }
     }
 
