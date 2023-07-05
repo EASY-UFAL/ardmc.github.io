@@ -231,8 +231,7 @@ class CameraFrame {
           0.5 * ((landmarks.x - 0.5) / distance) + 0.5;
         results.multiHandLandmarks[0][i].y =
           0.5 * ((landmarks.y - 0.5) / distance) + 0.5;
-        results.multiHandLandmarks[0][i].z =
-          0.5 * ((landmarks.z - 0.5) / distance);
+        results.multiHandLandmarks[0][i].z = 0.5 * (landmarks.z / distance);
       }
     }
 
