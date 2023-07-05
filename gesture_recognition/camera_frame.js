@@ -23,7 +23,7 @@ class CameraFrame {
   draw() {
     this.videoElement = document.createElement("video");
     this.videoElement.className = "input_video";
-    this.videoElement.style = "display: none";
+    this.videoElement.style = "display: 20%";
 
     this.outputCanvas = document.createElement("canvas");
     this.outputCanvas.className = "output_canvas";
@@ -61,7 +61,7 @@ class CameraFrame {
       minTrackingConfidence: 0.5,
     });
     hands.onResults((results) => {
-      results = this.normalizeHand(results);
+      // results = this.normalizeHand(results);
       if (isAnalogicPage()) {
         const pinchGesture = new PinchGesture(
           this.child,
