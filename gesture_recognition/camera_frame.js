@@ -23,7 +23,7 @@ class CameraFrame {
   draw() {
     this.videoElement = document.createElement("video");
     this.videoElement.className = "input_video";
-    this.videoElement.style = "display: 20%";
+    this.videoElement.style = "display: none";
 
     this.outputCanvas = document.createElement("canvas");
     this.outputCanvas.className = "output_canvas";
