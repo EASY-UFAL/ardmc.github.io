@@ -108,7 +108,7 @@ class FingerCountingGesture {
   increaseValue() {
     let pageContent = document.getElementById(this.id);
     if (pageContent.value <= this.max) {
-      if (increaseTimeOut == 3) {
+      if (increaseTimeOut == 15) {
         pageContent.value += this.step;
         pageContent.innerHTML = pageContent.value.toFixed(1) + this.unit;
         increaseTimeOut = 0;
@@ -121,7 +121,7 @@ class FingerCountingGesture {
   decreaseValue() {
     let pageContent = document.getElementById(this.id);
     if (pageContent.value >= this.min) {
-      if (decreaseTimeOut == 3) {
+      if (decreaseTimeOut == 15) {
         pageContent.value -= this.step;
         pageContent.innerHTML = pageContent.value.toFixed(1) + this.unit;
         decreaseTimeOut = 0;
