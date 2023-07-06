@@ -149,11 +149,11 @@ class CameraFrame {
             markColor = "red";
           } else {
             markColor = "blue";
-            if (z < 0.02) this.enableToClick = true;
+            if (z < 0.005) this.enableToClick = true;
           }
           if (buttonElement != null) {
             buttonElement.style.borderColor = "red";
-            if (z < 0.02 && this.enableToClick && this.handOpen) {
+            if (z < 0.005 && this.enableToClick && this.handOpen) {
               buttonElement.click();
               this.enableToClick = false;
             }
