@@ -61,7 +61,7 @@ class CameraFrame {
       minTrackingConfidence: 0.5,
     });
     hands.onResults((results) => {
-      results = this.normalizeHand(results);
+      // results = this.normalizeHand(results);
       if (isAnalogicPage()) {
         const pinchGesture = new PinchGesture(
           this.child,

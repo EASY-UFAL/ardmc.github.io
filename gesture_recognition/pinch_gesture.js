@@ -96,11 +96,6 @@ class PinchGesture {
               canvasCtx.fillStyle = "green";
               canvasCtx.fill();
 
-              // let hip = Math.hypot(
-              //   (X2 - X1) / ((Z1 + Z2) / 2),
-              //   (Y2 - Y1) / (Z1 + Z2 / 2)
-              // );
-
               let dist = Math.sqrt(
                 Math.pow(coords1.x - coords2.x, 2) +
                   Math.pow(coords1.y - coords2.y, 2)
@@ -108,11 +103,6 @@ class PinchGesture {
               console.log(dist);
 
               dist = clamp(dist, min_clamp, max_clamp);
-              // if (Math.abs(oldValuesArray[0] - dist) < 150) {
-              //   oldValuesArray.push(oldValuesArray[0]);
-              // } else {
-              //   oldValuesArray.push(dist);
-              // }
 
               oldValuesArray.push(dist);
               let val = filterMeasurement(0.05, oldValuesArray[0], dist);
