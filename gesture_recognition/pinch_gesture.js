@@ -137,7 +137,7 @@ class PinchGesture {
             }
 
             canvasCtx.beginPath();
-            canvasCtx.arc(x, y, 100 * z, 0, 2 * Math.PI);
+            canvasCtx.arc(x, y, 30 * z, 0, 2 * Math.PI);
             canvasCtx.fillStyle = markColor;
             canvasCtx.fill();
             canvasCtx.stroke();
@@ -167,7 +167,7 @@ class PinchGesture {
       let markColor = "black";
 
       canvasCtx.beginPath();
-      canvasCtx.arc(x, y, 100 * z, 0, 2 * Math.PI);
+      canvasCtx.arc(x, y, 30 * z, 0, 2 * Math.PI);
       canvasCtx.fillStyle = markColor;
       canvasCtx.fill();
       canvasCtx.stroke();
