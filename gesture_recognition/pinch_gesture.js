@@ -36,9 +36,7 @@ class PinchGesture {
     var progressBar = document.getElementById("dynamicProgressBar");
     var propertyValue = document.getElementsByClassName("property-value")[0];
     if (alerta1 == 1) {
-      showMessage(
-        "Faça um gesto de 'paz e amor' para entrar na tela de edição."
-      );
+      showMessage("Feche a mão para entrar na tela de edição.");
       alerta1 = -1;
     }
 
@@ -49,7 +47,7 @@ class PinchGesture {
       // draw hands
       // calc distance
       if (updatedValue == -1) {
-        if (isPeaceAndLove(HAND)) {
+        if (!isHandOpen(HAND[0])) {
           canEditValue = true;
         }
         if (canEditValue) {
