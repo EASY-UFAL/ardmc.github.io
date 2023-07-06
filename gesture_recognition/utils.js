@@ -26,10 +26,11 @@ function showMessage(mensagem, position = "50%", color = "yellow") {
   alerta.style.top = position;
   alerta.style.left = "50%";
   alerta.style.transform = "translate(-50%, -50%)";
-  alerta.style.padding = "10px";
+  alerta.style.padding = "8px";
   alerta.style.background = color;
   alerta.style.border = "1px solid black";
-  alerta.style.fontSize = "16px";
+  alerta.style.fontSize = "14px";
+  alerta.style.width = "80%";
 
   document.body.appendChild(alerta);
   setTimeout(() => {

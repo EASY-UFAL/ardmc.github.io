@@ -33,16 +33,16 @@ class FingerCountingGesture {
     var progressBar = document.getElementById("dynamicProgressBar");
     let pageContent = document.getElementById(this.id);
 
+    showMessage(
+      "Feche a mão para entrar no modo de edição.\n1 dedo:  incrementar; 2 dedos: decrementar, 4: confirmar; 5: voltar página.",
+      "60%"
+    );
     if (results.multiHandLandmarks.length > 0) {
       HAND = results.multiHandLandmarks;
       this.draw(HAND[0], canvasCtx);
 
-      showMessage(
-        "Feche a mão para entrar no modo de edição.\nLevante 1 dedo para incrementar o valor, 2 dedos para decrementar, 4 para confirmar e 5 para sair da página."
-      );
-
       let quantityFingersUp = this.getRaisedFingersCount(HAND[0]);
-      showMessage(`Você está com ${quantityFingersUp} dedos levantados`, "70%");
+      showMessage(`Você está com ${quantityFingersUp} dedos levantados`, "80%");
 
       if (canEditValue) {
         progressBar.value = pageContent.value;
@@ -55,7 +55,7 @@ class FingerCountingGesture {
             break;
           case 4:
             canEditValue = 0;
-            showMessage("Valor atualizado com sucesso!", "25%", "green");
+            showMessage("Valor atualizado com sucesso!", "20%", "green");
             break;
           case 5:
             break;
