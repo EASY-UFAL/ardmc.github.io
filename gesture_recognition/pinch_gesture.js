@@ -44,6 +44,7 @@ class PinchGesture {
 
     if (results.multiHandLandmarks.length > 0) {
       HAND = results.multiHandLandmarks;
+      HAND = normalizeHand(results).multiHandLandmarks;
 
       // draw hands
       // calc distance
