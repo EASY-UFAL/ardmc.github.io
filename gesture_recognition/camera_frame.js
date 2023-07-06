@@ -223,7 +223,6 @@ class CameraFrame {
     let HAND = results.multiHandLandmarks;
     if (HAND[0] != undefined) {
       let distance = getDistanceBetweenTwoPoints(HAND[0][0], HAND[0][9]);
-      let handCentroid = this.calculateHandCentroid(HAND);
       for (let i = 0; i < HAND[0].length; i++) {
         let landmarks = HAND[0][i];
 
@@ -231,7 +230,8 @@ class CameraFrame {
           0.5 * ((landmarks.x - 0.5) / distance) + 0.5;
         results.multiHandLandmarks[0][i].y =
           0.5 * ((landmarks.y - 0.5) / distance) + 0.5;
-        results.multiHandLandmarks[0][i].z = 0.5 * (landmarks.z / distance);
+        results.multiHandLandmarks[0][i].z =
+          0.5 * ((landmarks.z - 0.5) / distance);
       }
     }
 
