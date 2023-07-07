@@ -26,6 +26,7 @@ function isLiberationGesture(HAND) {
     HAND[0][8].y
   );
   let isThetaValid = Math.abs(theta) > 90 ? true : false;
+  showMessage("theta:" + `${theta}`);
   console.log(theta, isThetaValid);
 
   let result =
