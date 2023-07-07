@@ -155,7 +155,6 @@ class CameraFrame {
           if (buttonElement != null) {
             buttonElement.style.borderColor = "red";
             if (quantityFingersUp == 2 && this.enableToClick) {
-              console.log("teste");
               buttonElement.click();
               this.enableToClick = false;
             }

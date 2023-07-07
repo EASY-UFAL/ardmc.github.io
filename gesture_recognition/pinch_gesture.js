@@ -36,7 +36,9 @@ class PinchGesture {
     var progressBar = document.getElementById("dynamicProgressBar");
     var propertyValue = document.getElementsByClassName("property-value")[0];
     if (alerta1 == 1) {
-      showMessage("Faça um L com 3 dedos para liberar a tela de edição.");
+      showMessage(
+        "Levante apenas o dedo mindinho para liberar a tela de edição."
+      );
       alerta1 = -1;
     }
 

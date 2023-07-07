@@ -21,14 +21,6 @@ function isLiberationGesture(HAND) {
   const isPinkyExtended = HAND[0][20].x < HAND[0][18].x;
   let quantityFingersUp = getRaisedFingersCount(HAND[0]);
 
-  let theta = getDegreeBetweenTwoPoints(
-    HAND[0][4].x,
-    HAND[0][8].x,
-    HAND[0][4].y,
-    HAND[0][8].y
-  );
-  let isThetaValid = Math.abs(theta) > 90 ? true : false;
-
   let result =
     isThumbFolded &&
     isIndexFolded &&
