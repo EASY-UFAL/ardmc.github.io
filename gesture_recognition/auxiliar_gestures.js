@@ -26,15 +26,15 @@ function isLiberationGesture(HAND) {
     HAND[0][8].y
   );
   let isThetaValid = Math.abs(theta) > 90 ? true : false;
-  showMessage("theta:" + `${theta}`);
-  console.log(theta, isThetaValid);
+  showMessage(
+    `${(isThumbExtended, isIndexExtended, isMiddleExtended, quantityFingersUp)}`
+  );
 
   let result =
     isThumbExtended &&
     isIndexExtended &&
     isMiddleExtended &&
-    quantityFingersUp == 3 &&
-    isThetaValid;
+    quantityFingersUp == 3;
   return result;
 }
 
