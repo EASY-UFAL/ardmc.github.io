@@ -14,9 +14,11 @@ function isPeaceAndLove(HAND) {
 }
 
 function isLiberationGesture(HAND) {
-  const isThumbExtended = HAND[0][4].x > HAND[0][2].x;
-  const isIndexExtended = HAND[0][8].y < HAND[0][6].y;
-  const isMiddleExtended = HAND[0][12].y < HAND[0][10].y;
+  const isThumbFolded = HAND[0][4].x < HAND[0][2].x;
+  const isIndexFolded = HAND[0][8].y > HAND[0][6].y;
+  const isMiddleFolded = HAND[0][12].y > HAND[0][10].y;
+  const isRingFolded = HAND[0][16].y > HAND[0][14].y;
+  const isPinkyExtended = HAND[0][20].x < HAND[0][18].x;
   let quantityFingersUp = getRaisedFingersCount(HAND[0]);
 
   let theta = getDegreeBetweenTwoPoints(
@@ -26,15 +28,14 @@ function isLiberationGesture(HAND) {
     HAND[0][8].y
   );
   let isThetaValid = Math.abs(theta) > 90 ? true : false;
-  showMessage(
-    `${(isThumbExtended, isIndexExtended, isMiddleExtended, quantityFingersUp)}`
-  );
 
   let result =
-    isThumbExtended &&
-    isIndexExtended &&
-    isMiddleExtended &&
-    quantityFingersUp == 3;
+    isThumbFolded &&
+    isIndexFolded &&
+    isMiddleFolded &&
+    isRingFolded &&
+    isPinkyExtended &&
+    quantityFingersUp == 1;
   return result;
 }
 
