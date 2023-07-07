@@ -36,7 +36,7 @@ class PinchGesture {
     var progressBar = document.getElementById("dynamicProgressBar");
     var propertyValue = document.getElementsByClassName("property-value")[0];
     if (alerta1 == 1) {
-      showMessage("Feche a mão para entrar na tela de edição.");
+      showMessage("Faça um L com 3 dedos para liberar a tela de edição.");
       alerta1 = -1;
     }
 
@@ -44,10 +44,12 @@ class PinchGesture {
       HAND = results.multiHandLandmarks;
       HAND = normalizeHand(results).multiHandLandmarks;
 
+      let quantityFingersUp = getRaisedFingersCount(HAND[0]);
+
       // draw hands
       // calc distance
       if (updatedValue == -1) {
-        if (!isHandOpen(HAND[0])) {
+        if (isLiberationGesture(HAND)) {
           canEditValue = true;
         }
         if (canEditValue) {

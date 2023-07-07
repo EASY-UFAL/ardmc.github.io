@@ -13,6 +13,30 @@ function isPeaceAndLove(HAND) {
   return result;
 }
 
+function isLiberationGesture(HAND) {
+  const isThumbExtended = HAND[0][4].x > HAND[0][2].x;
+  const isIndexExtended = HAND[0][8].y < HAND[0][6].y;
+  const isMiddleExtended = HAND[0][12].y < HAND[0][10].y;
+  let quantityFingersUp = getRaisedFingersCount(HAND[0]);
+
+  let theta = getDegreeBetweenTwoPoints(
+    HAND[0][4].x,
+    HAND[0][8].x,
+    HAND[0][4].y,
+    HAND[0][8].y
+  );
+  let isThetaValid = Math.abs(theta) > 105 ? true : false;
+  console.log(theta, isThetaValid);
+
+  let result =
+    isThumbExtended &&
+    isIndexExtended &&
+    isMiddleExtended &&
+    quantityFingersUp == 3 &&
+    isThetaValid;
+  return result;
+}
+
 function isFingerUp(HAND, indexes, isThumbFinger) {
   if (isThumbFinger) {
     var result =
