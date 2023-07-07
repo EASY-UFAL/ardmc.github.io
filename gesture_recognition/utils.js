@@ -40,7 +40,7 @@ function showMessage(mensagem, position = "50%", color = "yellow") {
   document.body.appendChild(alerta);
   setTimeout(() => {
     alerta.style.display = "none";
-  }, 2000);
+  }, 5000);
 }
 
 function clamp(x, min_clamp, max_clamp) {
