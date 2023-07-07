@@ -139,7 +139,7 @@ class PinchGesture {
             }
 
             canvasCtx.beginPath();
-            canvasCtx.arc(x, y, z / 2, 0, 2 * Math.PI);
+            canvasCtx.arc(x, y, z, 0, 2 * Math.PI);
             canvasCtx.fillStyle = markColor;
             canvasCtx.fill();
             canvasCtx.stroke();
