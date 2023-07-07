@@ -62,8 +62,8 @@ class PinchGesture {
             let coords1 = HAND[0][fingerIndices[0]];
             let coords2 = HAND[0][fingerIndices[1]];
 
-            let x = landmarks.x * this.outputCanvas.width;
-            let y = landmarks.y * this.outputCanvas.height;
+            let x = landmarks.x;
+            let y = landmarks.y;
             let z = Math.abs(landmarks.z);
             let markColor = "black";
 
