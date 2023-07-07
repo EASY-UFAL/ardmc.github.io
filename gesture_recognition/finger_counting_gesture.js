@@ -35,6 +35,7 @@ class FingerCountingGesture {
     if (results.multiHandLandmarks.length > 0) {
       HAND = results.multiHandLandmarks;
       this.draw(HAND[0], canvasCtx);
+      let quantityFingersUp = getRaisedFingersCount(HAND[0]);
 
       if (canEditValue) {
         progressBar.value = pageContent.value;
