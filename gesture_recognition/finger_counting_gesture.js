@@ -1,8 +1,3 @@
-const thumbFingerIndexes = [1, 2, 3, 4];
-const indexFingerIndexes = [5, 6, 7, 8];
-const middleFingerIndexes = [9, 10, 11, 12];
-const ringFingerIndexes = [13, 14, 15, 16];
-const pinkyFingerIndexes = [17, 18, 19, 20];
 let increaseTimeOut = 0;
 let decreaseTimeOut = 0;
 let canEditValue = 0;
@@ -34,15 +29,12 @@ class FingerCountingGesture {
     let pageContent = document.getElementById(this.id);
 
     showMessage(
-      "Feche a mão para entrar no modo de edição.\n1 dedo:  incrementar; 2 dedos: decrementar, 4: confirmar; 5: voltar página.",
+      "Feche a mão para entrar no modo de edição. \n 1 dedo:  incrementar; 2 dedos: decrementar, 4: confirmar; 5: voltar página.",
       "60%"
     );
     if (results.multiHandLandmarks.length > 0) {
       HAND = results.multiHandLandmarks;
       this.draw(HAND[0], canvasCtx);
-
-      let quantityFingersUp = this.getRaisedFingersCount(HAND[0]);
-      showMessage(`Você está com ${quantityFingersUp} dedos levantados`, "80%");
 
       if (canEditValue) {
         progressBar.value = pageContent.value;
@@ -92,17 +84,6 @@ class FingerCountingGesture {
       canvasCtx.fill();
       canvasCtx.stroke();
     }
-  }
-
-  getRaisedFingersCount(HAND) {
-    let count = 0;
-    isFingerUp(HAND, thumbFingerIndexes, true) ? count++ : count;
-    isFingerUp(HAND, indexFingerIndexes) ? count++ : count;
-    isFingerUp(HAND, middleFingerIndexes) ? count++ : count;
-    isFingerUp(HAND, ringFingerIndexes) ? count++ : count;
-    isFingerUp(HAND, pinkyFingerIndexes) ? count++ : count;
-
-    return count;
   }
 
   increaseValue() {

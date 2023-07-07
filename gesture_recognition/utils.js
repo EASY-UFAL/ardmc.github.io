@@ -2,6 +2,11 @@ var tempoLimite = 2000;
 var tempoLimite2 = 3000;
 var tempoDecorrido = 0;
 var intervaloVerificacao = 100; // Intervalo de verificação (1ms)
+const thumbFingerIndexes = [1, 2, 3, 4];
+const indexFingerIndexes = [5, 6, 7, 8];
+const middleFingerIndexes = [9, 10, 11, 12];
+const ringFingerIndexes = [13, 14, 15, 16];
+const pinkyFingerIndexes = [17, 18, 19, 20];
 
 function getDistanceBetweenTwoPoints(point1, point2) {
   return Math.sqrt(
@@ -111,6 +116,17 @@ function normalizeHand(results) {
   }
 
   return results;
+}
+
+function getRaisedFingersCount(HAND) {
+  let count = 0;
+  isFingerUp(HAND, thumbFingerIndexes, true) ? count++ : count;
+  isFingerUp(HAND, indexFingerIndexes) ? count++ : count;
+  isFingerUp(HAND, middleFingerIndexes) ? count++ : count;
+  isFingerUp(HAND, ringFingerIndexes) ? count++ : count;
+  isFingerUp(HAND, pinkyFingerIndexes) ? count++ : count;
+
+  return count;
 }
 
 function isAnalogicPage() {

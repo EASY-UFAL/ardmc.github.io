@@ -120,6 +120,7 @@ class CameraFrame {
 
     if (results.multiHandLandmarks.length > 0) {
       HAND = results.multiHandLandmarks;
+      let quantityFingersUp = getRaisedFingersCount(HAND[0]);
 
       for (let i = 0; i < HAND[0].length; i++) {
         let landmarks = HAND[0][i];
@@ -149,11 +150,12 @@ class CameraFrame {
             markColor = "red";
           } else {
             markColor = "blue";
-            if (z < 0.005) this.enableToClick = true;
+            if (quantityFingersUp == 2) this.enableToClick = true;
           }
           if (buttonElement != null) {
             buttonElement.style.borderColor = "red";
-            if (z < 0.005 && this.enableToClick && this.handOpen) {
+            if (quantityFingersUp == 2 && this.enableToClick) {
+              console.log("teste");
               buttonElement.click();
               this.enableToClick = false;
             }

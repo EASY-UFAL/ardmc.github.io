@@ -121,7 +121,7 @@ class PinchGesture {
 
               let isReadyToSave = this.isReadyToSave(X1, X2, Y1, Y2);
               if (isReadyToSave == true) {
-                lineColor = "green";
+                lineColor = "red";
                 values,
                   (updatedValue = calculateTime(
                     val,
@@ -174,7 +174,7 @@ class PinchGesture {
 
   isReadyToSave(X1, X2, Y1, Y2) {
     let theta = getDegreeBetweenTwoPoints(X1, X2, Y1, Y2);
-    return Math.abs(theta) >= 89 && Math.abs(theta) <= 91 ? true : false;
+    return Math.abs(theta) >= 88 && Math.abs(theta) <= 92 ? true : false;
   }
 }
 
