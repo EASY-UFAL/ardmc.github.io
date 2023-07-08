@@ -1,0 +1,214 @@
+{
+    "mainMenu":{
+        "title": "Menu principal",
+        "buttons":{
+            "button1":{
+                "type": "Button",
+                "title": "Cirurgia",
+                "redirect": "surgeryType"
+            },
+            "button2": {
+                "type": "Button",
+                "title": "Terapia",
+                "redirect": "inDevelopment"
+            },
+            "button3": {
+                "type": "Button",
+                "title": "Configurações",
+                "redirect": "inDevelopment"
+            },
+            "button4": {
+                "type": "Button",
+                "title": "Bloquear",
+                "redirect": "inDevelopment"
+            }
+        }
+    },
+    "surgeryType": {
+        "title": "Menu Cirurgia",
+        "buttons":{
+            "button1": {
+                "type": "Button",
+                "title": "Normal",
+                "redirect": "surgeryPage.default"
+                
+            },
+            "button2": {
+                "type": "Button",
+                "title": "Assistida",
+                "redirect": "inDevelopment"
+            },
+            "button3": {
+                "type": "Button",
+                "title": "Voltar",
+                "redirect": "mainMenu"
+            }
+        }
+       
+    },
+    "surgeryPage": {
+        "default":{
+            "title": "Cirurgia",
+            "buttons":{
+
+                "button1": {
+                    "type": "Button",
+                    "title": "Em espera",
+                    "redirect": "toggleButton"
+                },
+                "button2": {
+                    "type": "PropertyButton",
+                    "title": "Potência",
+                    "min": 0.5,
+                    "max": 9.0,
+                    "step": 0.5,
+                    "currentValue": 0.5,
+                    "unit": "W",
+                    "redirect": "changeParam"
+                },
+                "button3": {
+                    "type": "ModeButton",
+                    "selectedMode": "pulsedSurgery.default",
+                    "modes": {"mode1":"continuous","mode2":"pulsedSurgery.default","mode3":"singlePulseSurgery.default"},
+                    "redirect": "changeMode"
+                },
+                "button4": {
+                    "type": "PropertyButton",
+                    "title": "Tempo",
+                    "min": 0,
+                    "max": 100000,
+                    "step": 0.01,
+                    "currentValue": 0,
+                    "unit": "s",
+                    "redirect": "resetTimer"
+                },
+                "button5": {
+                    
+                    "type": "PropertyButton",
+                    "title": "Energia",
+                    "min": 0,
+                    "max": 100000,
+                    "step": 0.01,
+                    "currentValue": 0,
+                    "unit": "J",
+                    "redirect": "resetTimer"
+                },
+                "button6": {
+                    "type": "Button",
+                    "title": "Menu",
+                    "redirect": "mainMenu"
+                },
+                "button7": {
+                    "type": "Button",
+                    "title": "Testar Fibra",
+                    "redirect": "inDevelopment"
+                },
+                "button8": {
+                    "type": "Button",
+                    "title": "Voltar",
+                    "redirect": "surgeryType"
+                }
+            },
+            "modes":{
+                "mode1":"Continuo",
+                "mode2":"Pulsado",
+                "mode3":"Pulso único"
+            }
+        }
+    },
+    "continuous":{
+        "title": "Modo Contínuo",
+            "buttons":{
+                "button1": {
+                    "type": "Button",
+                    "title": "Confirmar",
+                    "redirect": "modeConfirm"
+                },
+                "button2": {
+                    "type": "Button",
+                    "title": "Cancelar",
+                    "redirect": "modeCancel"
+                }
+            }
+    },
+    "pulsedSurgery":{
+        "default":{
+            "title": "Modo Pulsado",
+            "buttons":{
+                "button1":{
+                    "type":"PropertyButton",
+                    "title": "Duração",
+                    "min": 25,
+                    "max": 1000,
+                    "step": 25,
+                    "currentValue": 25,
+                    "unit": "ms",
+                    "redirect": "changeParam"   
+                },
+                "button2":{
+                    "type":"PropertyButton",
+                    "title": "Repetição",
+                    "min": 25,
+                    "max": 1000,
+                    "step": 25,
+                    "currentValue": 25,
+                    "unit": "ms",
+                    "redirect": "changeParam"   
+                },
+                "button3":{
+                    "type":"PropertyButton",
+                    "title": "Frequência(pps)",
+                    "min": 33.3,
+                    "max": 500,
+                    "step": 33.3,
+                    "currentValue": 33.3,
+                    "unit": "Hz",
+                    "redirect": "changeParam"   
+                },
+                "button4": {
+                    "type": "Button",
+                    "title": "Confirmar",
+                    "redirect": "modeConfirm"
+                },
+                "button5": {
+                    "type": "Button",
+                    "title": "Cancelar",
+                    "redirect": "modeCancel"
+                }
+            }
+        }
+
+    },
+    "singlePulseSurgery":{
+        "default":{
+            "title": "Modo de Pulso Único",
+            "buttons":{
+                "button1":{
+                    "type":"PropertyButton",
+                    "title": "Duração",
+                    "min": 25,
+                    "max": 1000,
+                    "step": 25,
+                    "currentValue": 25,
+                    "unit": "ms",
+                    "redirect": "changeParam"   
+                },
+                "button2": {
+                    "type": "Button",
+                    "title": "Confirmar",
+                    "redirect": "modeConfirm"
+                },
+                "button3": {
+                    "type": "Button",
+                    "title": "Cancelar",
+                    "redirect": "modeCancel"
+                }
+            }
+        }
+
+    }
+
+}
+
+
+
