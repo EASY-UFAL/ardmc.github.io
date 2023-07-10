@@ -103,7 +103,6 @@ class PinchGesture {
                 Math.pow(coords1.x - coords2.x, 2) +
                   Math.pow(coords1.y - coords2.y, 2)
               );
-              console.log(dist);
 
               dist = clamp(dist, min_clamp, max_clamp);
 
