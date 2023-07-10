@@ -120,6 +120,7 @@ class CameraFrame {
 
     if (results.multiHandLandmarks.length > 0) {
       HAND = results.multiHandLandmarks;
+      let quantityFingersUp = getRaisedFingersCount(HAND[0]);
 
       for (let i = 0; i < HAND[0].length; i++) {
         let landmarks = HAND[0][i];
@@ -149,11 +150,11 @@ class CameraFrame {
             markColor = "red";
           } else {
             markColor = "blue";
-            if (z < 0.02) this.enableToClick = true;
+            if (quantityFingersUp == 2) this.enableToClick = true;
           }
           if (buttonElement != null) {
             buttonElement.style.borderColor = "red";
-            if (z < 0.02 && this.enableToClick && this.handOpen) {
+            if (quantityFingersUp == 2 && this.enableToClick) {
               buttonElement.click();
               this.enableToClick = false;
             }
@@ -217,26 +218,6 @@ class CameraFrame {
     handCentroid.z /= HAND[0].length;
 
     return handCentroid;
-  }
-
-  normalizeHand(results) {
-    let HAND = results.multiHandLandmarks;
-    if (HAND[0] != undefined) {
-      let distance = getDistanceBetweenTwoPoints(HAND[0][0], HAND[0][9]);
-      let handCentroid = this.calculateHandCentroid(HAND);
-      for (let i = 0; i < HAND[0].length; i++) {
-        let landmarks = HAND[0][i];
-
-        results.multiHandLandmarks[0][i].x =
-          0.5 * ((landmarks.x - 0.5) / distance) + 0.5;
-        results.multiHandLandmarks[0][i].y =
-          0.5 * ((landmarks.y - 0.5) / distance) + 0.5;
-        results.multiHandLandmarks[0][i].z =
-          0.5 * ((landmarks.z - 0.5) / distance) + 0.5;
-      }
-    }
-
-    return results;
   }
 }
 

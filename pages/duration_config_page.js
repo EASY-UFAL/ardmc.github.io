@@ -38,7 +38,7 @@ class DurationConfigPage {
       "b1",
       this.value,
       () => {
-        alert("teste!");
+        // alert("teste!");
       },
       this.min,
       this.max,

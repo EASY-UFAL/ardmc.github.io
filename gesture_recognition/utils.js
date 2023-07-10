@@ -2,6 +2,11 @@ var tempoLimite = 2000;
 var tempoLimite2 = 3000;
 var tempoDecorrido = 0;
 var intervaloVerificacao = 100; // Intervalo de verificação (1ms)
+const thumbFingerIndexes = [1, 2, 3, 4];
+const indexFingerIndexes = [5, 6, 7, 8];
+const middleFingerIndexes = [9, 10, 11, 12];
+const ringFingerIndexes = [13, 14, 15, 16];
+const pinkyFingerIndexes = [17, 18, 19, 20];
 
 function getDistanceBetweenTwoPoints(point1, point2) {
   return Math.sqrt(
@@ -26,15 +31,16 @@ function showMessage(mensagem, position = "50%", color = "yellow") {
   alerta.style.top = position;
   alerta.style.left = "50%";
   alerta.style.transform = "translate(-50%, -50%)";
-  alerta.style.padding = "10px";
+  alerta.style.padding = "8px";
   alerta.style.background = color;
   alerta.style.border = "1px solid black";
-  alerta.style.fontSize = "16px";
+  alerta.style.fontSize = "14px";
+  alerta.style.width = "80%";
 
   document.body.appendChild(alerta);
   setTimeout(() => {
     alerta.style.display = "none";
-  }, 2000);
+  }, 5000);
 }
 
 function clamp(x, min_clamp, max_clamp) {
@@ -91,6 +97,36 @@ function calculateTime(val, min_val, max_val, values) {
     tempoDecorrido = 0;
   }
   return values, updatedValue;
+}
+
+function normalizeHand(results) {
+  let HAND = results.multiHandLandmarks;
+  if (HAND[0] != undefined) {
+    let distance = getDistanceBetweenTwoPoints(HAND[0][0], HAND[0][9]);
+    for (let i = 0; i < HAND[0].length; i++) {
+      let landmarks = HAND[0][i];
+
+      results.multiHandLandmarks[0][i].x =
+        0.5 * ((landmarks.x - 0.5) / distance) + 0.5;
+      results.multiHandLandmarks[0][i].y =
+        0.5 * ((landmarks.y - 0.5) / distance) + 0.5;
+      results.multiHandLandmarks[0][i].z =
+        0.5 * ((landmarks.z - 0.5) / distance);
+    }
+  }
+
+  return results;
+}
+
+function getRaisedFingersCount(HAND) {
+  let count = 0;
+  isFingerUp(HAND, thumbFingerIndexes, true) ? count++ : count;
+  isFingerUp(HAND, indexFingerIndexes) ? count++ : count;
+  isFingerUp(HAND, middleFingerIndexes) ? count++ : count;
+  isFingerUp(HAND, ringFingerIndexes) ? count++ : count;
+  isFingerUp(HAND, pinkyFingerIndexes) ? count++ : count;
+
+  return count;
 }
 
 function isAnalogicPage() {

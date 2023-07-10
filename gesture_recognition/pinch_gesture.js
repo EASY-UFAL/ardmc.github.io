@@ -37,18 +37,21 @@ class PinchGesture {
     var propertyValue = document.getElementsByClassName("property-value")[0];
     if (alerta1 == 1) {
       showMessage(
-        "Faça um gesto de 'paz e amor' para entrar na tela de edição."
+        "Levante apenas o dedo mindinho para liberar a tela de edição."
       );
       alerta1 = -1;
     }
 
     if (results.multiHandLandmarks.length > 0) {
       HAND = results.multiHandLandmarks;
+      HAND = normalizeHand(results).multiHandLandmarks;
+
+      let quantityFingersUp = getRaisedFingersCount(HAND[0]);
 
       // draw hands
       // calc distance
       if (updatedValue == -1) {
-        if (isPeaceAndLove(HAND)) {
+        if (isLiberationGesture(HAND)) {
           canEditValue = true;
         }
         if (canEditValue) {
@@ -89,17 +92,12 @@ class PinchGesture {
               canvasCtx.arc(
                 (X1 + X2) / 2,
                 (Y1 + Y2) / 2,
-                (100 * (Z1 + Z2)) / 2,
+                (10 * (Z1 + Z2)) / 2,
                 0,
                 2 * Math.PI
               );
               canvasCtx.fillStyle = "green";
               canvasCtx.fill();
-
-              // let hip = Math.hypot(
-              //   (X2 - X1) / ((Z1 + Z2) / 2),
-              //   (Y2 - Y1) / (Z1 + Z2 / 2)
-              // );
 
               let dist = Math.sqrt(
                 Math.pow(coords1.x - coords2.x, 2) +
@@ -108,11 +106,6 @@ class PinchGesture {
               console.log(dist);
 
               dist = clamp(dist, min_clamp, max_clamp);
-              // if (Math.abs(oldValuesArray[0] - dist) < 150) {
-              //   oldValuesArray.push(oldValuesArray[0]);
-              // } else {
-              //   oldValuesArray.push(dist);
-              // }
 
               oldValuesArray.push(dist);
               let val = filterMeasurement(0.05, oldValuesArray[0], dist);
@@ -132,7 +125,7 @@ class PinchGesture {
 
               let isReadyToSave = this.isReadyToSave(X1, X2, Y1, Y2);
               if (isReadyToSave == true) {
-                lineColor = "green";
+                lineColor = "red";
                 values,
                   (updatedValue = calculateTime(
                     val,
@@ -146,7 +139,7 @@ class PinchGesture {
             }
 
             canvasCtx.beginPath();
-            canvasCtx.arc(x, y, 100 * z, 0, 2 * Math.PI);
+            canvasCtx.arc(x, y, 10 * z, 0, 2 * Math.PI);
             canvasCtx.fillStyle = markColor;
             canvasCtx.fill();
             canvasCtx.stroke();
@@ -176,7 +169,7 @@ class PinchGesture {
       let markColor = "black";
 
       canvasCtx.beginPath();
-      canvasCtx.arc(x, y, 100 * z, 0, 2 * Math.PI);
+      canvasCtx.arc(x, y, 15 * z, 0, 2 * Math.PI);
       canvasCtx.fillStyle = markColor;
       canvasCtx.fill();
       canvasCtx.stroke();
@@ -185,7 +178,7 @@ class PinchGesture {
 
   isReadyToSave(X1, X2, Y1, Y2) {
     let theta = getDegreeBetweenTwoPoints(X1, X2, Y1, Y2);
-    return Math.abs(theta) >= 89 && Math.abs(theta) <= 91 ? true : false;
+    return Math.abs(theta) >= 88 && Math.abs(theta) <= 92 ? true : false;
   }
 }
 

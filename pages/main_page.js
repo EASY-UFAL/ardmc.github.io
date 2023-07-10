@@ -23,13 +23,13 @@ class MainPage {
       this.goToOtherPage();
     });
     const button2 = new Button("b2", "Terapia", () => {
-      alert("Terapia");
+      // alert("Terapia");
     });
     const button3 = new Button("b3", "Configurações", () => {
-      alert("Configurações");
+      // alert("Configurações");
     });
     const button4 = new Button("b4", "Bloquear", () => {
-      alert("Bloquear");
+      // alert("Bloquear");
     });
 
     const buttonsArr = [button1, button2, button3, button4];

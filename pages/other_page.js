@@ -24,7 +24,7 @@ class OtherPage {
       this.goToSurgeryPage();
     });
     const button2 = new Button("b2", "Assistida", () => {
-      alert("Cirurgia Assistida");
+      // alert("Cirurgia Assistida");
     });
     const button3 = new Button("b3", "Voltar", () => {
       this.goToMainPage();

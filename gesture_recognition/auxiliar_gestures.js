@@ -13,6 +13,24 @@ function isPeaceAndLove(HAND) {
   return result;
 }
 
+function isLiberationGesture(HAND) {
+  const isThumbFolded = HAND[0][4].x < HAND[0][2].x;
+  const isIndexFolded = HAND[0][8].y > HAND[0][6].y;
+  const isMiddleFolded = HAND[0][12].y > HAND[0][10].y;
+  const isRingFolded = HAND[0][16].y > HAND[0][14].y;
+  const isPinkyExtended = HAND[0][20].x < HAND[0][18].x;
+  let quantityFingersUp = getRaisedFingersCount(HAND[0]);
+
+  let result =
+    isThumbFolded &&
+    isIndexFolded &&
+    isMiddleFolded &&
+    isRingFolded &&
+    isPinkyExtended &&
+    quantityFingersUp == 1;
+  return result;
+}
+
 function isFingerUp(HAND, indexes, isThumbFinger) {
   if (isThumbFinger) {
     var result =

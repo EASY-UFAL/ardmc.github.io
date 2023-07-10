@@ -61,14 +61,14 @@ class SurgeryPage {
       0,
       "J",
       () => {
-        alert("Energia");
+        // alert("Energia");
       }
     );
     const button6 = new Button("b6", "Menu", () => {
       this.goToMainPage();
     });
     const button7 = new Button("b7", "Testar Fibra", () => {
-      alert("Testar Fibra");
+      // alert("Testar Fibra");
     });
     const button8 = new Button("b8", "Voltar", () => {
       this.goToOtherPage();

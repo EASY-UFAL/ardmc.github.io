@@ -1,8 +1,3 @@
-const thumbFingerIndexes = [1, 2, 3, 4];
-const indexFingerIndexes = [5, 6, 7, 8];
-const middleFingerIndexes = [9, 10, 11, 12];
-const ringFingerIndexes = [13, 14, 15, 16];
-const pinkyFingerIndexes = [17, 18, 19, 20];
 let increaseTimeOut = 0;
 let decreaseTimeOut = 0;
 let canEditValue = 0;
@@ -33,16 +28,14 @@ class FingerCountingGesture {
     var progressBar = document.getElementById("dynamicProgressBar");
     let pageContent = document.getElementById(this.id);
 
+    showMessage(
+      "Feche a mão para entrar no modo de edição. \n 1 dedo:  incrementar; 2 dedos: decrementar, 4: confirmar; 5: voltar página.",
+      "60%"
+    );
     if (results.multiHandLandmarks.length > 0) {
       HAND = results.multiHandLandmarks;
       this.draw(HAND[0], canvasCtx);
-
-      showMessage(
-        "Feche a mão para entrar no modo de edição.\nLevante 1 dedo para incrementar o valor, 2 dedos para decrementar, 4 para confirmar e 5 para sair da página."
-      );
-
-      let quantityFingersUp = this.getRaisedFingersCount(HAND[0]);
-      showMessage(`Você está com ${quantityFingersUp} dedos levantados`, "70%");
+      let quantityFingersUp = getRaisedFingersCount(HAND[0]);
 
       if (canEditValue) {
         progressBar.value = pageContent.value;
@@ -55,7 +48,7 @@ class FingerCountingGesture {
             break;
           case 4:
             canEditValue = 0;
-            showMessage("Valor atualizado com sucesso!", "25%", "green");
+            showMessage("Valor atualizado com sucesso!", "20%", "green");
             break;
           case 5:
             break;
@@ -94,21 +87,10 @@ class FingerCountingGesture {
     }
   }
 
-  getRaisedFingersCount(HAND) {
-    let count = 0;
-    isFingerUp(HAND, thumbFingerIndexes, true) ? count++ : count;
-    isFingerUp(HAND, indexFingerIndexes) ? count++ : count;
-    isFingerUp(HAND, middleFingerIndexes) ? count++ : count;
-    isFingerUp(HAND, ringFingerIndexes) ? count++ : count;
-    isFingerUp(HAND, pinkyFingerIndexes) ? count++ : count;
-
-    return count;
-  }
-
   increaseValue() {
     let pageContent = document.getElementById(this.id);
     if (pageContent.value <= this.max) {
-      if (increaseTimeOut == 15) {
+      if (increaseTimeOut == 10) {
         pageContent.value += this.step;
         pageContent.innerHTML = pageContent.value.toFixed(1) + this.unit;
         increaseTimeOut = 0;
@@ -121,7 +103,7 @@ class FingerCountingGesture {
   decreaseValue() {
     let pageContent = document.getElementById(this.id);
     if (pageContent.value >= this.min) {
-      if (decreaseTimeOut == 15) {
+      if (decreaseTimeOut == 10) {
         pageContent.value -= this.step;
         pageContent.innerHTML = pageContent.value.toFixed(1) + this.unit;
         decreaseTimeOut = 0;
