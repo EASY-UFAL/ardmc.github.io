@@ -181,10 +181,14 @@ class PageBuilder{
     acceptChanges(desiredParam){    
         console.log(this.lastPage.buttonList) 
         const desiredIndex = this.lastPage.buttonList.findIndex((button)=>button.text===desiredParam);
+        var propertyValue = document.getElementsByClassName("property-value")[0].innerHTML;
+        propertyValue = propertyValue.replace(/[^0-9\.]+/g, "");
+        console.log(propertyValue);
  
         console.log(desiredIndex);
         let button = this.lastPage.buttonList[desiredIndex]
-        this.lastPage.buttonList[desiredIndex]=this.currentParamPage.changeParam(button.id,button.text,button.min,button.max,button.step,button.unit,button.onClick);
+        // this.lastPage.buttonList[desiredIndex]=this.currentParamPage.changeParam(button.id,button.text,button.min,button.max,button.step,button.unit,button.onClick);
+        this.lastPage.buttonList[desiredIndex]=new PropertyButton(button.id,button.text,button.min,button.max,button.step,propertyValue,button.unit,button.onClick);
         
         if(this.lastPage instanceof LaserPage){
             console.log("pagina de cirurgia");
@@ -247,7 +251,7 @@ class PageBuilder{
 
     }
     modeCancel(){
-        this.lastPage.draw();
+        this.changeMode();
     }
 }
 

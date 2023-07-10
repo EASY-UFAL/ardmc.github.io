@@ -26,6 +26,10 @@ class FingerCountingGesture {
 
     this.child.clearButtons();
     var progressBar = document.getElementById("dynamicProgressBar");
+    var propertyValue = document.getElementsByClassName("property-value")[0].innerHTML;
+    var val = propertyValue.replace(/[^0-9\.]+/g, "");
+    console.log(val);
+
     let pageContent = document.getElementById(this.id);
 
     showMessage(
@@ -38,7 +42,9 @@ class FingerCountingGesture {
       let quantityFingersUp = getRaisedFingersCount(HAND[0]);
 
       if (canEditValue) {
-        progressBar.value = pageContent.value;
+        // progressBar.value = pageContent.value;
+
+        progressBar.value = this.value;
         switch (quantityFingersUp) {
           case 1:
             this.increaseValue();
@@ -49,8 +55,16 @@ class FingerCountingGesture {
           case 4:
             canEditValue = 0;
             showMessage("Valor atualizado com sucesso!", "20%", "green");
+            let accEvt = new Event("accept");
+            const accElem = document.getElementById("page-content");
+            accElem.value = this.value;
+            accElem.dispatchEvent(accEvt);
             break;
           case 5:
+            let cancEvt = new Event("cancel");
+            const cancElem = document.getElementById("page-content");
+            cancElem.value = this.value;
+            cancElem.dispatchEvent(cancEvt);
             break;
           default:
             break;

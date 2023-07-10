@@ -153,6 +153,10 @@ class PinchGesture {
         canEditValue = false;
         values = [];
         showMessage("O valor foi alterado com sucesso!");
+        let evt = new Event("accept");
+        const pageContent = document.getElementById("page-content");
+        pageContent.value = this.value;
+        pageContent.dispatchEvent(evt);
       }
     }
     canvasCtx.restore();

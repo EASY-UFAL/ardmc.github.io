@@ -31,12 +31,18 @@ class ParamPage {
     header.appendChild(pageTitle);
     pageContent.appendChild(header);
 
+    // const propertyvalue = document.createElement("div");
+    // propertyvalue.className = "property-value";
+    // propertyvalue.innerHTML = this.value + " " + this.unit;
+    // pageContent.appendChild(propertyvalue);
     const propertyvalue = document.createElement("div");
     propertyvalue.className = "property-value";
+    propertyvalue.id = this.id;
+    propertyvalue.value = this.value;
     propertyvalue.innerHTML = this.value + " " + this.unit;
     pageContent.appendChild(propertyvalue);
-    propertyvalue.addEventListener("accept", this.onAccept);
-    propertyvalue.addEventListener("cancel", this.onCancel);
+    pageContent.addEventListener("accept", this.onAccept);
+    pageContent.addEventListener("cancel", this.onCancel);
     // const accbutton = document.createElement("button");
     // accbutton.innerHTML = "aceitar";
     // accbutton.addEventListener("click", this.onAccept);
@@ -46,11 +52,32 @@ class ParamPage {
     // cancbutton.innerHTML = "cancelar";
     // pageContent.appendChild(cancbutton);
 
-    const propertybar = new PropertyBar("b1", this.value, () => {
-      alert("teste!");
-    });
+    // const propertybar = new PropertyBar("b1", this.value, () => {
+    //   alert("teste!");
+    // });
+    const propertybar = new PropertyBar(
+      "b1",
+      this.value,
+      () => {
+        // alert("teste!");
+      },
+      this.min,
+      this.max,
+      this.value,
+      this.step
+    );
 
-    const cameraFrame = new CameraFrame(propertybar);
+
+    // const cameraFrame = new CameraFrame(propertybar);
+    const cameraFrame = new CameraFrame(
+      propertybar,
+      this.id,
+      this.min,
+      this.max,
+      this.value,
+      this.step,
+      this.unit
+    );
     pageContent.appendChild(cameraFrame.draw());
   }
   changeParam(id, title, min, max, step, unit, func) {
