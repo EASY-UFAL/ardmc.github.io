@@ -1,11 +1,9 @@
-class PropertyButton {
-    constructor(id, text, min, max, value, unit, onClick) {
+class ModeButton {
+    constructor(id, selectedMode,modes=[],options=[], onClick) {
         this.id = id;
-        this.text = text;
-        this.min = min
-        this.max = max
-        this.value = value
-        this.unit = unit
+        this.selectedMode = selectedMode;
+        this.modes = modes
+        this.options = options;
         this.onClick = onClick;
     }
 
@@ -16,7 +14,15 @@ class PropertyButton {
         this.button.className = 'button-action';
         this.button.setAttribute('role', 'button');
         this.button.id = this.id;
-        this.button.innerHTML = this.text+':<br/>'+this.value+' '+this.unit;
+        if(String(this.selectedMode).startsWith("pulsed")){
+            this.button.innerHTML = 'Modo:Pulsado<br/>'+this.options[2].value+' '+'Hz';
+        }
+        else if(String(this.selectedMode).startsWith("single")){
+            this.button.innerHTML = 'Modo:Pulso único<br/>'+this.options[0].value+' '+'ms';
+        }
+        else{
+            this.button.innerHTML = 'Modo:<br/>Contínuo';
+        }
         this.button.addEventListener('click', this.onClick);
         div.appendChild(this.button);
 
@@ -33,4 +39,4 @@ class PropertyButton {
     
 }
 
-export default PropertyButton;
+export default ModeButton;
