@@ -1,14 +1,11 @@
 class PropertyBar {
-    constructor(id, value, onClick, min, max, step) {
+    constructor(id, value, onClick) {
         this.id = id;
         this.value = value;
         this.onClick = onClick;
-        this.min = min
-        this.max = max
-        this.step = step
     }
 
-    draw() {
+    draw(){
         // const div = document.createElement('div');
         // div.className = 'property-bar';
         // this.propertyvalue = document.createElement('div');
@@ -26,7 +23,7 @@ class PropertyBar {
         const progressBar = document.createElement("progress");
         progressBar.setAttribute("id", "dynamicProgressBar");
         progressBar.setAttribute("value", "0");
-        progressBar.setAttribute("max", this.max);
+        progressBar.setAttribute("max", "100");
 
         progressBar.style.width = "100%";
         progressBar.style.height = "30px";
@@ -34,14 +31,14 @@ class PropertyBar {
 
         progressContainer.appendChild(progressBar);
 
-        // this.startProgress(progressBar);
+        this.startProgress(progressBar);
 
         return progressContainer;
     }
 
     startProgress(progressBar) {
         var value = 0;
-        var interval = setInterval(function () {
+        var interval = setInterval(function() {
             if (value >= 100) {
                 clearInterval(interval);
             } else {
@@ -51,7 +48,7 @@ class PropertyBar {
         }, 100);
     }
 
-    clearButtons() {
+    clearButtons(){
 
     }
 

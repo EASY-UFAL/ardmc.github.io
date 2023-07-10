@@ -15,6 +15,7 @@ class Button {
         this.button.innerHTML = this.text;
         this.button.addEventListener('click', this.onClick);
         div.appendChild(this.button);
+        
 
         return div;
     }
